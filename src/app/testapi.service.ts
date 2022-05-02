@@ -4,6 +4,11 @@ import {
   AngularFireList,
   AngularFireObject,
 } from '@angular/fire/compat/database';
+import { Observable } from 'rxjs';
+
+// export interface dbUser {
+//   role: string;
+// }
 
 @Injectable({
   providedIn: 'root',
@@ -16,4 +21,42 @@ export class TestapiService {
     this.shizzleList = this.db.list('users/clients');
     return this.shizzleList;
   }
+
+  getUserRole(uid: string) {
+    return this.db.object('users/' + uid + '/role');
+  }
+
+  // getUserRole(uid: string) {
+  //   return this.db
+  //     .list('users')
+  //     .snapshotChanges()
+  //     .subscribe((users) => {
+  //       console.log(users);
+
+  //       let parsedUsers: any[] = [];
+  //       users.forEach((user) => {
+  //         parsedUsers.push(user.payload.toJSON());
+  //       });
+  //       console.log(parsedUsers);
+  //     });
+  // }
+  // getUserRole(uid: string) {
+  //   function isAnDbUser(obj: any): obj is dbUser {
+  //     return 'role' in obj && true;
+  //   }
+  //   let parsedUser: dbUser;
+  //   this.db
+  //     .object('users/' + uid)
+  //     .snapshotChanges()
+  //     .subscribe((user) => {
+  //       let tempUser;
+  //       tempUser = user.payload.toJSON()
+  //       if (isAnDbUser(tempUser)) {
+  //         parsedUser = user.payload.toJSON(
+  //       }
+  //       );
+  //       // if (parsedUser instanceof dbUser) return parsedUser.role;
+  //     });
+  //   return null;
+  // }
 }

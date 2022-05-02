@@ -7,16 +7,24 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
+import { TestapiService } from 'src/app/testapi.service';
+
+interface DbUser {
+  email: string;
+  role: string;
+}
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   userData: any; // Save logged in user data
+  userRole: any;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone, // NgZone service to remove outside scope warning
+    private testapi: TestapiService
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -24,10 +32,23 @@ export class AuthService {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user')!);
+        // JSON.parse(localStorage.getItem('user')!);
+        this.testapi
+          .getUserRole(user.uid)
+          .snapshotChanges()
+          .subscribe((role) => {
+            console.log(role.payload.toJSON());
+            this.userRole = role;
+            // console.log(this.userRole);
+
+            localStorage.setItem('role', JSON.stringify(this.userRole.payload));
+            // JSON.parse(localStorage.getItem('role')!);
+          });
+        // console.log(JSON.parse(localStorage.getItem('user')!));
       } else {
         localStorage.setItem('user', 'null');
-        JSON.parse(localStorage.getItem('user')!);
+        localStorage.setItem('role', 'null');
+        // JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
@@ -37,9 +58,9 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['admin']);
         });
-        this.SetUserData(result.user);
+        // this.SetUserData(result.user);
       })
       .catch((error) => {
         window.alert(error.message);
@@ -61,24 +82,24 @@ export class AuthService {
       });
   }
   // Send email verfificaiton when new user sign up
-  SendVerificationMail() {
-    return this.afAuth.currentUser
-      .then((u: any) => u.sendEmailVerification())
-      .then(() => {
-        this.router.navigate(['verify-email-address']);
-      });
-  }
+  // SendVerificationMail() {
+  //   return this.afAuth.currentUser
+  //     .then((u: any) => u.sendEmailVerification())
+  //     .then(() => {
+  //       this.router.navigate(['verify-email-address']);
+  //     });
+  // }
   // Reset Forggot password
-  ForgotPassword(passwordResetEmail: string) {
-    return this.afAuth
-      .sendPasswordResetEmail(passwordResetEmail)
-      .then(() => {
-        window.alert('Password reset email sent, check your inbox.');
-      })
-      .catch((error) => {
-        window.alert(error);
-      });
-  }
+  // ForgotPassword(passwordResetEmail: string) {
+  //   return this.afAuth
+  //     .sendPasswordResetEmail(passwordResetEmail)
+  //     .then(() => {
+  //       window.alert('Password reset email sent, check your inbox.');
+  //     })
+  //     .catch((error) => {
+  //       window.alert(error);
+  //     });
+  // }
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
@@ -86,28 +107,31 @@ export class AuthService {
     // return user !== null && user.emailVerified !== false ? true : false;
     return user !== null && user.emailVerified !== false ? true : true;
   }
+  get isAdmin(): boolean {
+    return JSON.parse(localStorage.getItem('role')!) === 'admin';
+  }
   // Sign in with Google
-  GoogleAuth() {
-    return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
-      if (res) {
-        this.router.navigate(['dashboard']);
-      }
-    });
-  }
+  // GoogleAuth() {
+  //   return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
+  //     if (res) {
+  //       this.router.navigate(['dashboard']);
+  //     }
+  //   });
+  // }
   // Auth logic to run auth providers
-  AuthLogin(provider: any) {
-    return this.afAuth
-      .signInWithPopup(provider)
-      .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
-        });
-        this.SetUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error);
-      });
-  }
+  // AuthLogin(provider: any) {
+  //   return this.afAuth
+  //     .signInWithPopup(provider)
+  //     .then((result) => {
+  //       this.ngZone.run(() => {
+  //         this.router.navigate(['dashboard']);
+  //       });
+  //       this.SetUserData(result.user);
+  //     })
+  //     .catch((error) => {
+  //       window.alert(error);
+  //     });
+  // }
   /* Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
@@ -118,20 +142,23 @@ export class AuthService {
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL,
+      // displayName: user.displayName,
+      // photoURL: user.photoURL,
       // commented out to be able to login as unverified user
       // emailVerified: user.emailVerified,
-      emailVerified: true,
+      // emailVerified: true,
+      role: 'admin',
     };
-    return userRef.set(userData, {
-      merge: true,
-    });
+    // this.testapi.getUserRole(user.uid);
+    // return userRef.set(userData, {
+    //   merge: true,
+    // });
   }
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
+      localStorage.removeItem('role');
       this.router.navigate(['sign-in']);
     });
   }
