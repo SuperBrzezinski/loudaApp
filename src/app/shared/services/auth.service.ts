@@ -52,7 +52,8 @@ export class AuthService {
       .then((result) => {
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
-        this.SendVerificationMail();
+        // commented out to be able to login as unverified user
+        // this.SendVerificationMail();
         this.SetUserData(result.user);
       })
       .catch((error) => {
@@ -81,7 +82,9 @@ export class AuthService {
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    return user !== null && user.emailVerified !== false ? true : false;
+    // commented out to be able to login as unverified user
+    // return user !== null && user.emailVerified !== false ? true : false;
+    return user !== null && user.emailVerified !== false ? true : true;
   }
   // Sign in with Google
   GoogleAuth() {
@@ -117,7 +120,9 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified,
+      // commented out to be able to login as unverified user
+      // emailVerified: user.emailVerified,
+      emailVerified: true,
     };
     return userRef.set(userData, {
       merge: true,
