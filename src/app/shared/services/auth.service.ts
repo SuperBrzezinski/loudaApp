@@ -33,17 +33,17 @@ export class AuthService {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
         // JSON.parse(localStorage.getItem('user')!);
-        this.testapi
-          .getUserRole(user.uid)
-          .snapshotChanges()
-          .subscribe((role) => {
-            console.log(role.payload.toJSON());
-            this.userRole = role;
-            // console.log(this.userRole);
+        // this.testapi
+        //   .getUserRole(user.uid)
+        //   .snapshotChanges()
+        //   .subscribe((role) => {
+        //     console.log(role.payload.toJSON());
+        //     this.userRole = role;
+        //     // console.log(this.userRole);
 
-            localStorage.setItem('role', JSON.stringify(this.userRole.payload));
-            // JSON.parse(localStorage.getItem('role')!);
-          });
+        //     localStorage.setItem('role', JSON.stringify(this.userRole.payload));
+        //     // JSON.parse(localStorage.getItem('role')!);
+        //   });
         // console.log(JSON.parse(localStorage.getItem('user')!));
       } else {
         localStorage.setItem('user', 'null');
@@ -57,9 +57,20 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.ngZone.run(() => {
-          this.router.navigate(['admin']);
-        });
+        console.log(result);
+        this.testapi
+          .getUserRole(result.user!.uid)
+          .snapshotChanges()
+          .subscribe((role) => {
+            console.log(role.payload.toJSON());
+            this.userRole = role;
+            // console.log(this.userRole);
+
+            localStorage.setItem('role', JSON.stringify(this.userRole.payload));
+            this.ngZone.run(() => {
+              this.router.navigate(['admin']);
+            });
+          });
         // this.SetUserData(result.user);
       })
       .catch((error) => {
