@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   OnInit,
@@ -11,6 +12,7 @@ import { AuthService } from '../../shared/services/auth.service';
   selector: 'app-dashboard',
   templateUrl: './admin-shell.component.html',
   styleUrls: ['./admin-shell.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminShellComponent implements OnInit {
   public isNavbarCollapsed: boolean = false;

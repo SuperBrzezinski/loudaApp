@@ -4,8 +4,8 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AdminShellComponent } from './components/admin-shell/admin-shell.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { AdminGuard } from './shared/guard/admin.guard';
-import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 import { CustomersListComponent } from './components/customers-list/customers-list.component';
+import { CustomerShellComponent } from './components/customer-shell/customer-shell.component';
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent },
@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'customer',
-    component: CustomerDashboardComponent,
+    component: CustomerShellComponent,
     canActivate: [AuthGuard],
   },
 ];
