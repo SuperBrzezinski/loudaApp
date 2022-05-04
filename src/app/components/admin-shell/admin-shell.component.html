@@ -1,22 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#"><button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-      <div class="text-center" style="font-size: 30px; margin-top:0px; margin-bottom: 25px;">🍨</div>
-    </button>
-    <span>Louda</span></a>
+    <a class="navbar-brand">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <div class="text-center" style="font-size: 30px; margin-top:0px; margin-bottom: 25px;">🍨</div>
+      </button>
+      <span>Louda</span>
+    </a>
     <button class="navbar-toggler" type="button" (click)="toggleNavbar()" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div #collapsible class="collapse navbar-collapse" [class.show]="isNavbarCollapsed" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Zamówienia</a>
+          <a class="nav-link" aria-current="page" routerLink="../admin" routerLinkActive="active">Zamówienia</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Konfiguracja lodów</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Klienci</a>
+          <a class="nav-link" routerLink="customers" routerLinkActive="active">Klienci</a>
         </li>
       </ul>
       <div class="d-flex">

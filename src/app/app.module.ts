@@ -27,6 +27,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+
+import { CustomersListComponent } from './components/customers-list/customers-list.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
     SignInComponent,
     SignUpComponent,
     CustomerDashboardComponent,
+    CustomersListComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +54,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatToolbarModule,
     MatIconModule,
+    MatTableModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
