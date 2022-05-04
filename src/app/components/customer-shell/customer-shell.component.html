@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <div class="text-center" style="font-size: 30px; margin-top:0px; margin-bottom: 25px;">🍨</div>
+      </button>
+      <span>Louda</span>
+    </a>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div #collapsible class="collapse navbar-collapse" [class.show]="isNavbarCollapsed" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="../customer" routerLinkActive="active">Zamów</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Ulubione</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <button mat-button (click)="authService.SignOut()"><mat-icon>exit_to_app</mat-icon>Wyloguj</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+

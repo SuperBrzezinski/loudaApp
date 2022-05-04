@@ -19,7 +19,6 @@ import { TestcomponentComponent } from './testcomponent/testcomponent.component'
 import { AdminShellComponent } from './components/admin-shell/admin-shell.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthService } from './shared/services/auth.service';
-import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,6 +32,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { CustomersListComponent } from './components/customers-list/customers-list.component';
 import { CustomerTableComponent } from './components/customers-list/customer-table/customer-table.component';
 import { DialogAddCustomerComponent } from './components/customers-list/dialog-add-customer/dialog-add-customer.component';
+import { CustomerShellComponent } from './components/customer-shell/customer-shell.component';
 
 @NgModule({
   declarations: [
@@ -40,10 +40,10 @@ import { DialogAddCustomerComponent } from './components/customers-list/dialog-a
     TestcomponentComponent,
     AdminShellComponent,
     SignInComponent,
-    CustomerDashboardComponent,
     CustomersListComponent,
     CustomerTableComponent,
     DialogAddCustomerComponent,
+    CustomerShellComponent,
   ],
   imports: [
     BrowserModule,
