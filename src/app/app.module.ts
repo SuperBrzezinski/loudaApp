@@ -19,7 +19,6 @@ import { TestcomponentComponent } from './testcomponent/testcomponent.component'
 import { AdminShellComponent } from './components/admin-shell/admin-shell.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthService } from './shared/services/auth.service';
-import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { CustomerDashboardComponent } from './components/customer-dashboard/customer-dashboard.component';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +26,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+
+import { CustomersListComponent } from './components/customers-list/customers-list.component';
+import { CustomerTableComponent } from './components/customers-list/customer-table/customer-table.component';
+import { DialogAddCustomerComponent } from './components/customers-list/dialog-add-customer/dialog-add-customer.component';
 
 @NgModule({
   declarations: [
@@ -34,8 +40,10 @@ import { MatIconModule } from '@angular/material/icon';
     TestcomponentComponent,
     AdminShellComponent,
     SignInComponent,
-    SignUpComponent,
     CustomerDashboardComponent,
+    CustomersListComponent,
+    CustomerTableComponent,
+    DialogAddCustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +58,9 @@ import { MatIconModule } from '@angular/material/icon';
     MatInputModule,
     MatToolbarModule,
     MatIconModule,
+    MatTableModule,
+    MatDialogModule,
+    MatDividerModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,

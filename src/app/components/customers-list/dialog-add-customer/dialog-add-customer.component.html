@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Dodaj klienta</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Nazwa klienta</mat-label>
+      <input matInput formControlName="name" placeholder="Mobbyn sp. z.o.o." required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Email klienta</mat-label>
+      <input matInput formControlName="email" placeholder="belmondawg@poppyn.gda.pl" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Hasło klienta</mat-label>
+      <input matInput formControlName="password" placeholder="KoleżankoToTrójmiastoANieSaoPaulo" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="cancelDialog()">Anuluj</button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Zarejestruj</button>
+</div>

@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { User } from '../services/user';
+// import { User } from '../services/user';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
@@ -78,20 +78,20 @@ export class AuthService {
       });
   }
   // Sign up with email/password
-  SignUp(email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign
-        up and returns promise */
-        // commented out to be able to login as unverified user
-        // this.SendVerificationMail();
-        this.SetUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
-  }
+  // SignUp(email: string, password: string) {
+  //   return this.afAuth
+  //     .createUserWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       /* Call the SendVerificaitonMail() function when new user sign
+  //       up and returns promise */
+  //       // commented out to be able to login as unverified user
+  //       // this.SendVerificationMail();
+  //       // this.SetUserData(result.user);
+  //     })
+  //     .catch((error) => {
+  //       window.alert(error.message);
+  //     });
+  // }
   // Send email verfificaiton when new user sign up
   // SendVerificationMail() {
   //   return this.afAuth.currentUser
@@ -146,25 +146,25 @@ export class AuthService {
   /* Setting up user data when sign in with username/password,
   sign up with username/password and sign in with social auth
   provider in Firestore database using AngularFirestore + AngularFirestoreDocument service */
-  SetUserData(user: any) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
-    const userData: User = {
-      uid: user.uid,
-      email: user.email,
-      // displayName: user.displayName,
-      // photoURL: user.photoURL,
-      // commented out to be able to login as unverified user
-      // emailVerified: user.emailVerified,
-      // emailVerified: true,
-      role: 'admin',
-    };
-    // this.testapi.getUserRole(user.uid);
-    // return userRef.set(userData, {
-    //   merge: true,
-    // });
-  }
+  // SetUserData(user: any) {
+  //   const userRef: AngularFirestoreDocument<any> = this.afs.doc(
+  //     `users/${user.uid}`
+  //   );
+  //   const userData: User = {
+  //     uid: user.uid,
+  //     email: user.email,
+  //     // displayName: user.displayName,
+  //     // photoURL: user.photoURL,
+  //     // commented out to be able to login as unverified user
+  //     // emailVerified: user.emailVerified,
+  //     // emailVerified: true,
+  //     role: 'admin',
+  //   };
+  //   // this.testapi.getUserRole(user.uid);
+  //   // return userRef.set(userData, {
+  //   //   merge: true,
+  //   // });
+  // }
   // Sign out
   SignOut() {
     return this.afAuth.signOut().then(() => {
