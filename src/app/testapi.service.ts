@@ -19,7 +19,20 @@ export class TestapiService {
 
   getShizzle() {
     this.shizzleList = this.db.list('users/clients');
+    this.db.object('users').update('gowno');
     return this.shizzleList;
+  }
+
+  deleteShizzle() {
+    console.log('robie delete');
+
+    this.db.object('test/0').remove();
+  }
+
+  postShizzle() {
+    console.log('robie post');
+    this.db.list('test/').push({ chuj: 'chuj' });
+    this.db.object('test/' + 'uid').set({ chuj: 'kutas' });
   }
 
   getUserRole(uid: string) {

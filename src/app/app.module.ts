@@ -16,7 +16,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 
 import { TestcomponentComponent } from './testcomponent/testcomponent.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AdminShellComponent } from './components/admin-shell/admin-shell.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthService } from './shared/services/auth.service';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -25,13 +25,14 @@ import { CustomerDashboardComponent } from './components/customer-dashboard/cust
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-// import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
     AppComponent,
     TestcomponentComponent,
-    DashboardComponent,
+    AdminShellComponent,
     SignInComponent,
     SignUpComponent,
     CustomerDashboardComponent,
@@ -47,7 +48,8 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
-    // MatToolbarModule,
+    MatToolbarModule,
+    MatIconModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,

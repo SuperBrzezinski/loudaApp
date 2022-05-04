@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SignInComponent } from './components/sign-in/sign-in.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AdminShellComponent } from './components/admin-shell/admin-shell.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { AdminGuard } from './shared/guard/admin.guard';
@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'register-user', component: SignUpComponent },
   {
     path: 'admin',
-    component: DashboardComponent,
+    component: AdminShellComponent,
     canActivate: [AuthGuard, AdminGuard],
   },
   {
