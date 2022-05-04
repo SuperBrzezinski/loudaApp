@@ -1,0 +1,59 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+      <div class="text-center" style="font-size: 30px; margin-top:0px; margin-bottom: 25px;">🍨</div>
+    </button>
+    <span>Louda</span></a>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div #collapsible class="collapse navbar-collapse" [class.show]="isNavbarCollapsed" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Zamówienia</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Konfiguracja lodów</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Klienci</a>
+        </li>
+      </ul>
+      <div class="d-flex">
+        <button mat-button (click)="authService.SignOut()"><mat-icon>exit_to_app</mat-icon>Wyloguj</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- Sidebar navigation -->
+<div class="container">
+  <div class="row">
+    <!-- Main content -->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="inner-adjust">
+        <!-- Show user data when logged in -->
+        <div class="row" *ngIf="authService.userData as user">
+          <div class="col-md-12">
+            <div class="media">
+              <!-- <img class="align-self-start mr-5 img-thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
+                alt="{{user.displayName}}"> -->
+              <div class="media-body">
+                <h1>Admin Dashboard</h1>
+                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+                <p>User ID: <strong>{{user.uid}}</strong></p>
+                <p>Email: <strong>{{user.email}}</strong></p>
+                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+                <p>Role: <strong>{{user.role}}</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

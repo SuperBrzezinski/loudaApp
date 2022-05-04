@@ -16,7 +16,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
 
 import { TestcomponentComponent } from './testcomponent/testcomponent.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AdminShellComponent } from './components/admin-shell/admin-shell.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthService } from './shared/services/auth.service';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -32,7 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
   declarations: [
     AppComponent,
     TestcomponentComponent,
-    DashboardComponent,
+    AdminShellComponent,
     SignInComponent,
     SignUpComponent,
     CustomerDashboardComponent,
