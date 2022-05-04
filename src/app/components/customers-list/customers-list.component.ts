@@ -1,12 +1,10 @@
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { Observable } from 'rxjs';
-import { User } from 'src/app/shared/models/user.model';
-import { CustomersListService } from './customers-list.service';
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { DialogAddCustomerComponent } from './dialog-add-customer/dialog-add-customer.component';
 
 @Component({
   selector: 'app-customers-list',
@@ -14,22 +12,17 @@ import { CustomersListService } from './customers-list.service';
   styleUrls: ['./customers-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomersListComponent implements OnInit {
-  public customers!: User[];
-  displayedColumns: string[] = ['index', 'name', 'email'];
-  constructor(
-    private customerListService: CustomersListService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+export class CustomersListComponent {
+  constructor(public dialog: MatDialog) {}
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogAddCustomerComponent, {
+      width: '600px',
+      // data: { name: this.name, animal: this.animal },
+    });
 
-  ngOnInit(): void {
-    this.init();
-  }
-
-  private init() {
-    this.customerListService.getCustomers().subscribe((customers) => {
-      this.customers = customers;
-      this.changeDetectorRef.markForCheck();
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      // this.animal = result;
     });
   }
 }

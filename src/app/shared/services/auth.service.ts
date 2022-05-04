@@ -78,20 +78,20 @@ export class AuthService {
       });
   }
   // Sign up with email/password
-  SignUp(email: string, password: string) {
-    return this.afAuth
-      .createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        /* Call the SendVerificaitonMail() function when new user sign
-        up and returns promise */
-        // commented out to be able to login as unverified user
-        // this.SendVerificationMail();
-        // this.SetUserData(result.user);
-      })
-      .catch((error) => {
-        window.alert(error.message);
-      });
-  }
+  // SignUp(email: string, password: string) {
+  //   return this.afAuth
+  //     .createUserWithEmailAndPassword(email, password)
+  //     .then((result) => {
+  //       /* Call the SendVerificaitonMail() function when new user sign
+  //       up and returns promise */
+  //       // commented out to be able to login as unverified user
+  //       // this.SendVerificationMail();
+  //       // this.SetUserData(result.user);
+  //     })
+  //     .catch((error) => {
+  //       window.alert(error.message);
+  //     });
+  // }
   // Send email verfificaiton when new user sign up
   // SendVerificationMail() {
   //   return this.afAuth.currentUser
