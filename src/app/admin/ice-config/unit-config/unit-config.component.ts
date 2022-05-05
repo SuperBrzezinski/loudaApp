@@ -1,20 +1,20 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogAddTasteComponent } from './dialog-add-taste/dialog-add-taste.component';
+import { DialogAddUnitComponent } from './dialog-add-unit/dialog-add-unit.component';
 
 @Component({
-  selector: 'app-taste-config',
-  templateUrl: './taste-config.component.html',
-  styleUrls: ['./taste-config.component.scss'],
+  selector: 'app-unit-config',
+  templateUrl: './unit-config.component.html',
+  styleUrls: ['./unit-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TasteConfigComponent implements OnInit {
+export class UnitConfigComponent implements OnInit {
   constructor(public dialog: MatDialog) {}
 
   ngOnInit(): void {}
 
   openAddDialog(): void {
-    const dialogRef = this.dialog.open(DialogAddTasteComponent, {
+    const dialogRef = this.dialog.open(DialogAddUnitComponent, {
       width: '600px',
       // data: { name: this.name, animal: this.animal },
     });

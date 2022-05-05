@@ -24,4 +24,12 @@ export class ApiService {
   postTaste(tasteName: string) {
     this.db.list<string>('ice/tastes').push(tasteName);
   }
+
+  getUnits(): Observable<string[]> {
+    return this.db.list<string>('ice/units').valueChanges();
+  }
+
+  postUnit(unitValue: string) {
+    this.db.list<string>('ice/units').push(unitValue);
+  }
 }
