@@ -57,7 +57,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         this.testapi
           .getUserRole(result.user!.uid)
           .snapshotChanges()
@@ -116,7 +116,8 @@ export class AuthService {
     const user = JSON.parse(localStorage.getItem('user')!);
     // commented out to be able to login as unverified user
     // return user !== null && user.emailVerified !== false ? true : false;
-    return user !== null && user.emailVerified !== false ? true : true;
+    // return user !== null && user.emailVerified !== false ? true : true;
+    return user !== null;
   }
   get isAdmin(): boolean {
     return JSON.parse(localStorage.getItem('role')!) === 'admin';
