@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Dodaj jednostkę</h1>
+<mat-divider></mat-divider>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Liczba mililitrów</mat-label>
+      <input matInput formControlName="value" placeholder="2137 ml" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button (click)="cancelDialog()">Anuluj</button>
+  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Dodaj</button>
+</div>
