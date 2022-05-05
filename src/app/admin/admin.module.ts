@@ -8,6 +8,10 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
 import { AngularMaterialModule } from '../shared/angular-material.module';
+import { IceConfigComponent } from './ice-config/ice-config.component';
+import { TasteConfigComponent } from './ice-config/taste-config/taste-config.component';
+import { TasteTableComponent } from './ice-config/taste-config/taste-table/taste-table.component';
+import { DialogAddTasteComponent } from './ice-config/taste-config/dialog-add-taste/dialog-add-taste.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +19,10 @@ import { AngularMaterialModule } from '../shared/angular-material.module';
     CustomersListComponent,
     CustomerTableComponent,
     DialogAddCustomerComponent,
+    IceConfigComponent,
+    TasteConfigComponent,
+    TasteTableComponent,
+    DialogAddTasteComponent,
   ],
   imports: [
     CommonModule,

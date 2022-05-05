@@ -16,4 +16,12 @@ export class ApiService {
   postUser(uid: string, user: User) {
     this.db.object('users/' + uid).set(user);
   }
+
+  getTastes(): Observable<string[]> {
+    return this.db.list<string>('ice/tastes').valueChanges();
+  }
+
+  postTaste(tasteName: string) {
+    this.db.list<string>('ice/tastes').push(tasteName);
+  }
 }
