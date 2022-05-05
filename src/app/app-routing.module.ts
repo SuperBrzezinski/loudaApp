@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { AdminGuard } from './shared/guard/admin.guard';
-import { CustomerShellComponent } from './components/customer-shell/customer-shell.component';
 const routes: Routes = [
   { path: '', redirectTo: '/sign-in', pathMatch: 'full' },
   { path: 'sign-in', component: SignInComponent },
@@ -15,8 +14,9 @@ const routes: Routes = [
   },
   {
     path: 'customer',
-    component: CustomerShellComponent,
     canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('./customer/customer.module').then((m) => m.CustomerModule),
   },
 ];
 @NgModule({

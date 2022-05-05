@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AdminModule } from './admin/admin.module';
+import { CustomerModule } from './customer/customer.module';
 
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -39,10 +40,8 @@ const angularMaterialImports = [
   MatDividerModule,
 ];
 
-import { CustomerShellComponent } from './components/customer-shell/customer-shell.component';
-
 @NgModule({
-  declarations: [AppComponent, SignInComponent, CustomerShellComponent],
+  declarations: [AppComponent, SignInComponent],
   imports: [
     BrowserModule,
     NgbModule,
@@ -51,6 +50,7 @@ import { CustomerShellComponent } from './components/customer-shell/customer-she
     BrowserAnimationsModule,
     ReactiveFormsModule,
     AdminModule,
+    CustomerModule,
     angularMaterialImports,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
