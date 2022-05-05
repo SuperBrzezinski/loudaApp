@@ -15,30 +15,19 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
+const angularFire = [
+  AngularMaterialModule,
+  AngularFireModule.initializeApp(environment.firebase),
+  AngularFireAuthModule,
+  AngularFirestoreModule,
+  AngularFireStorageModule,
+  AngularFireDatabaseModule,
+];
 import { environment } from '../environments/environment';
 
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { AuthService } from './shared/services/auth.service';
-
-//Angular Material Imports
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatDividerModule } from '@angular/material/divider';
-const angularMaterialImports = [
-  MatButtonModule,
-  MatFormFieldModule,
-  MatInputModule,
-  MatToolbarModule,
-  MatIconModule,
-  MatTableModule,
-  MatDialogModule,
-  MatDividerModule,
-];
+import { AngularMaterialModule } from './shared/angular-material.module';
 
 @NgModule({
   declarations: [AppComponent, SignInComponent],
@@ -51,12 +40,7 @@ const angularMaterialImports = [
     ReactiveFormsModule,
     AdminModule,
     CustomerModule,
-    angularMaterialImports,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    AngularFireDatabaseModule,
+    angularFire,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],
