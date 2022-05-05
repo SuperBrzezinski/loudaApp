@@ -57,7 +57,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(result);
+        // console.log(result);
         this.testapi
           .getUserRole(result.user!.uid)
           .snapshotChanges()
