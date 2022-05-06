@@ -8,6 +8,15 @@ import {
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { TestapiService } from 'src/app/testapi.service';
+import { Store } from '@ngrx/store';
+import {
+  addRole,
+  logIn,
+  logOut,
+  removeRole,
+} from 'src/app/state/user/user.actions';
+import { Role } from '../models/role.model';
+import { UserState } from 'src/app/state/user/user.reducer';
 
 interface DbUser {
   email: string;
@@ -18,13 +27,15 @@ interface DbUser {
 })
 export class AuthService {
   userData: any; // Save logged in user data
-  userRole: any;
+  userRole!: any;
+  storeVar!: any;
   constructor(
     public afs: AngularFirestore, // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
-    private testapi: TestapiService
+    private testapi: TestapiService,
+    private store: Store<{ role: Role }>
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -32,6 +43,7 @@ export class AuthService {
       if (user) {
         this.userData = user;
         localStorage.setItem('user', JSON.stringify(this.userData));
+
         // JSON.parse(localStorage.getItem('user')!);
         // this.testapi
         //   .getUserRole(user.uid)
@@ -57,6 +69,7 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
+        this.store.dispatch(logIn());
         // console.log(result);
         this.testapi
           .getUserRole(result.user!.uid)
@@ -67,6 +80,9 @@ export class AuthService {
             // console.log(this.userRole);
 
             localStorage.setItem('role', JSON.stringify(this.userRole.payload));
+            this.store.dispatch(
+              addRole({ role: role.payload.exportVal() as Role })
+            );
             this.ngZone.run(() => {
               this.router.navigate(['admin']);
             });
@@ -171,6 +187,8 @@ export class AuthService {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
       localStorage.removeItem('role');
+      this.store.dispatch(logOut());
+      this.store.dispatch(removeRole());
       this.router.navigate(['sign-in']);
     });
   }
