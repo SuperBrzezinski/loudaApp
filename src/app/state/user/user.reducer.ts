@@ -1,33 +1,39 @@
 import { createReducer, on } from '@ngrx/store';
 import { Role } from 'src/app/shared/models/role.model';
-import { addRole, logIn, logOut, removeRole } from './user.actions';
+import { logIn, logOut, removeRole } from './user.actions';
 
 export interface UserState {
+  uid: string | null;
+  name: string | null;
   role: Role;
   isLoggedIn: boolean;
 }
 
 export const initialState: UserState = {
+  uid: null,
+  name: null,
   role: null,
   isLoggedIn: false,
 };
 
 export const userReducer = createReducer(
   initialState,
-  on(addRole, (state, { role }) => ({
-    ...state,
-    role: role,
-  })),
   on(removeRole, (state) => ({
     ...state,
     role: null,
   })),
-  on(logIn, (state) => ({
+  on(logIn, (state, { role, name, uid }) => ({
     ...state,
+    name: name,
+    role: role,
+    uid: uid,
     isLoggedIn: true,
   })),
   on(logOut, (state) => ({
     ...state,
+    name: null,
+    role: null,
+    uid: null,
     isLoggedIn: false,
   }))
 );

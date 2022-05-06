@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminShellComponent } from './admin-shell/admin-shell.component';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { IceConfigComponent } from './ice-config/ice-config.component';
+import { OrdersComponent } from './orders/orders.component';
 const routes: Routes = [
   {
     path: '',
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: 'config',
         component: IceConfigComponent,
+      },
+      {
+        path: 'orders',
+        component: OrdersComponent,
       },
     ],
   },

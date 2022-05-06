@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
+import { Order } from '../models/order.model';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -8,6 +9,12 @@ import { User } from '../models/user.model';
 })
 export class ApiService {
   constructor(private db: AngularFireDatabase) {}
+
+  getUser(uid: string): Observable<User> {
+    return this.db
+      .object<User>('users/' + uid)
+      .valueChanges() as Observable<User>;
+  }
 
   getUsers(): Observable<User[]> {
     return this.db.list<User>('users').valueChanges();
@@ -31,5 +38,13 @@ export class ApiService {
 
   postUnit(unitValue: string) {
     this.db.list<string>('ice/units').push(unitValue);
+  }
+
+  getOrders(date: string): Observable<Order[]> {
+    return this.db.list<Order>('orders/' + date).valueChanges();
+  }
+
+  postOrder(order: Order, date: string) {
+    this.db.list('orders/' + date + '/').push(order);
   }
 }

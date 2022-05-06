@@ -9,14 +9,11 @@ import {
 import { Router } from '@angular/router';
 import { TestapiService } from 'src/app/testapi.service';
 import { Store } from '@ngrx/store';
-import {
-  addRole,
-  logIn,
-  logOut,
-  removeRole,
-} from 'src/app/state/user/user.actions';
+import { logIn, logOut, removeRole } from 'src/app/state/user/user.actions';
 import { Role } from '../models/role.model';
 import { UserState } from 'src/app/state/user/user.reducer';
+import { ApiService } from './api.service';
+import { first } from 'rxjs';
 
 interface DbUser {
   email: string;
@@ -35,6 +32,7 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     private testapi: TestapiService,
+    private apiService: ApiService,
     private store: Store<{ role: Role }>
   ) {
     /* Saving user data in localstorage when
@@ -69,24 +67,37 @@ export class AuthService {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
       .then((result) => {
-        this.store.dispatch(logIn());
         // console.log(result);
-        this.testapi
-          .getUserRole(result.user!.uid)
-          .snapshotChanges()
-          .subscribe((role) => {
-            console.log(role.payload.toJSON());
-            this.userRole = role;
-            // console.log(this.userRole);
 
-            localStorage.setItem('role', JSON.stringify(this.userRole.payload));
+        this.apiService
+          .getUser(result.user!.uid)
+          .pipe(first())
+          .subscribe((user) => {
             this.store.dispatch(
-              addRole({ role: role.payload.exportVal() as Role })
+              logIn({ uid: result.user!.uid, name: user.name, role: user.role })
             );
             this.ngZone.run(() => {
               this.router.navigate(['admin']);
             });
           });
+
+        // this.testapi
+        //   .getUserRole(result.user!.uid)
+        //   .snapshotChanges()
+        //   .subscribe((role) => {
+        //     console.log(role.payload.toJSON());
+        //     this.userRole = role;
+        //     // console.log(this.userRole);
+
+        //     localStorage.setItem('role', JSON.stringify(this.userRole.payload));
+        //     this.store.dispatch(logIn({ name: role.payload }));
+        //     // this.store.dispatch(
+        //     //   addRole({ role: role.payload.exportVal() as Role })
+        //     // );
+        //     this.ngZone.run(() => {
+        //       this.router.navigate(['admin']);
+        //     });
+        //   });
         // this.SetUserData(result.user);
       })
       .catch((error) => {

@@ -15,6 +15,8 @@ import { DialogAddTasteComponent } from './ice-config/taste-config/dialog-add-ta
 import { UnitConfigComponent } from './ice-config/unit-config/unit-config.component';
 import { UnitTableComponent } from './ice-config/unit-config/unit-table/unit-table.component';
 import { DialogAddUnitComponent } from './ice-config/unit-config/dialog-add-unit/dialog-add-unit.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrdersTableComponent } from './orders/orders-table/orders-table.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { DialogAddUnitComponent } from './ice-config/unit-config/dialog-add-unit
     UnitConfigComponent,
     UnitTableComponent,
     DialogAddUnitComponent,
+    OrdersComponent,
+    OrdersTableComponent,
   ],
   imports: [
     CommonModule,
