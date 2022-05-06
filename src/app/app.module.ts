@@ -25,7 +25,7 @@ const angularFire = [
 ];
 import { environment } from '../environments/environment';
 
-import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignInComponent } from './shared/components/sign-in/sign-in.component';
 import { AuthService } from './shared/services/auth.service';
 import { AngularMaterialModule } from './shared/angular-material.module';
 import { StoreModule } from '@ngrx/store';

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AdminGuard } from '../shared/guard/admin.guard';
+import { AuthGuard } from '../shared/guard/auth.guard';
 import { AdminShellComponent } from './admin-shell/admin-shell.component';
 import { CustomersListComponent } from './customers-list/customers-list.component';
 import { IceConfigComponent } from './ice-config/ice-config.component';
@@ -7,6 +9,7 @@ import { OrdersComponent } from './orders/orders.component';
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthGuard, AdminGuard],
     component: AdminShellComponent,
     children: [
       {
