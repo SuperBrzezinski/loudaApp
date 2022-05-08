@@ -7,7 +7,8 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { add, format } from 'date-fns';
-import { first, map } from 'rxjs';
+import { first, map, take } from 'rxjs';
+import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
 import { Order } from 'src/app/shared/models/order.model';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { AppState } from 'src/app/state/app.state';
@@ -47,7 +48,7 @@ export class CustomerOrdersComponent implements OnInit {
     private apiService: ApiService,
     private store: Store<AppState>,
     private formBuild: FormBuilder,
-    private changeDetectionRed: ChangeDetectorRef
+    private changeDetectionRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -89,6 +90,39 @@ export class CustomerOrdersComponent implements OnInit {
 
     let lastOrder = { date: this.tomorrowDate, items: this.formItems.value };
     this.apiService.postUserLastOrder(this.customerUid, lastOrder);
+  }
+
+  loadLastOrder(): void {
+    // let lastOrderedItems: IceCreamItem[] = [];
+    this.apiService
+      .getUserLastOrderItems(this.customerUid)
+      .pipe(take(1))
+      .subscribe((items) => {
+        console.log(items);
+
+        this.form = this.form = this.formBuild.group({
+          formItems: this.formBuild.array([
+            // this.formBuild.group({
+            //   taste: ['', [Validators.required, Validators.minLength(3)]],
+            //   unit: ['', Validators.required],
+            //   quantity: ['', Validators.required],
+            // }),
+          ]),
+        });
+        items.forEach((item) => {
+          this.formItems.push(
+            this.formBuild.group({
+              taste: [
+                item.taste,
+                [Validators.required, Validators.minLength(3)],
+              ],
+              unit: [item.unit, [Validators.required]],
+              quantity: [String(item.quantity), [Validators.required]],
+            })
+          );
+        });
+        this.changeDetectionRef.markForCheck();
+      });
   }
 
   private init() {
@@ -135,7 +169,7 @@ export class CustomerOrdersComponent implements OnInit {
         console.log(lastOrderedItems);
 
         this.customerLastOrderItems = lastOrderedItems;
-        this.changeDetectionRed.markForCheck();
+        this.changeDetectionRef.markForCheck();
       });
 
     this.createForm();
