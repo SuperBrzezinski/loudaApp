@@ -1,22 +1,26 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { add, format } from 'date-fns';
-import { first, map, Observable, startWith } from 'rxjs';
+import { first, map } from 'rxjs';
 import { Order } from 'src/app/shared/models/order.model';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { AppState } from 'src/app/state/app.state';
-import { selectUserName } from 'src/app/state/user/user.selectors';
+import {
+  selectUserLastOrderDate,
+  selectUserName,
+  selectUserUid,
+} from 'src/app/state/user/user.selectors';
 
-// export interface User {
-//   name: string;
-// }
+interface CustomerLastOrderItem {
+  taste: string;
+  amount: string;
+}
 
 @Component({
   selector: 'app-customer-orders',
@@ -34,16 +38,24 @@ export class CustomerOrdersComponent implements OnInit {
   possibleTastes!: string[];
   possibleUnits!: string[];
   private customerName!: string;
+  private customerUid!: string;
+  private customerLastOrderDate!: string;
+  public customerLastOrderItems!: CustomerLastOrderItem[];
   form!: FormGroup;
 
   constructor(
     private apiService: ApiService,
     private store: Store<AppState>,
-    private formBuild: FormBuilder
+    private formBuild: FormBuilder,
+    private changeDetectionRed: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.init();
+  }
+
+  get isTodaysOrderPlaced() {
+    return this.customerLastOrderDate === this.tomorrowDate;
   }
 
   get formItems() {
@@ -73,10 +85,10 @@ export class CustomerOrdersComponent implements OnInit {
       customerName: this.customerName,
       items: this.formItems.value,
     };
-
-    // console.log(recipeTemp);
-
     this.apiService.postOrder(orderTemp, this.tomorrowDate);
+
+    let lastOrder = { date: this.tomorrowDate, items: this.formItems.value };
+    this.apiService.postUserLastOrder(this.customerUid, lastOrder);
   }
 
   private init() {
@@ -88,6 +100,15 @@ export class CustomerOrdersComponent implements OnInit {
         console.log(this.customerName);
       });
 
+    this.store.select(selectUserUid).subscribe((uid) => {
+      this.customerUid = uid as string;
+    });
+
+    this.store.select(selectUserLastOrderDate).subscribe((date) => {
+      this.customerLastOrderDate = date as string;
+      console.log(date);
+    });
+
     this.apiService.getTastes().subscribe((tastes) => {
       this.possibleTastes = tastes;
     });
@@ -96,19 +117,32 @@ export class CustomerOrdersComponent implements OnInit {
       this.possibleUnits = units;
     });
 
+    this.apiService
+      .getUserLastOrderItems(this.customerUid)
+      .pipe(
+        map((iceCreamItems) => {
+          return iceCreamItems.map((iceCreamItem) => {
+            return {
+              taste: iceCreamItem.taste,
+              amount: String(
+                Number(iceCreamItem.unit) * Number(iceCreamItem.quantity)
+              ),
+            };
+          });
+        })
+      )
+      .subscribe((lastOrderedItems) => {
+        console.log(lastOrderedItems);
+
+        this.customerLastOrderItems = lastOrderedItems;
+        this.changeDetectionRed.markForCheck();
+      });
+
     this.createForm();
   }
 
   private createForm() {
     this.form = this.formBuild.group({
-      // customerName: this.formBuild.control({ value: '', disabled: false }, [
-      //   Validators.minLength(3),
-      //   Validators.required,
-      // ]),
-      // description: this.formBuild.control({ value: '', disabled: false }, [
-      //   Validators.minLength(10),
-      //   Validators.required,
-      // ]),
       formItems: this.formBuild.array([
         this.formBuild.group({
           taste: ['', [Validators.required, Validators.minLength(3)]],
@@ -116,11 +150,6 @@ export class CustomerOrdersComponent implements OnInit {
           quantity: ['', Validators.required],
         }),
       ]),
-      // rating: this.formBuild.control(3),
-      // imageUrl: this.formBuild.control({ value: '', disabled: false }, [
-      //   Validators.minLength(5),
-      //   Validators.required,
-      // ]),
     });
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Observable } from 'rxjs';
+import { IceCreamItem } from '../models/icecreamitem.model';
 import { Order } from '../models/order.model';
 import { User } from '../models/user.model';
 
@@ -20,8 +21,21 @@ export class ApiService {
     return this.db.list<User>('users').valueChanges();
   }
 
+  getUserLastOrderItems(uid: string): Observable<IceCreamItem[]> {
+    return this.db
+      .list<IceCreamItem>(`users/${uid}/lastOrder/items`)
+      .valueChanges();
+  }
+
   postUser(uid: string, user: User) {
     this.db.object('users/' + uid).set(user);
+  }
+
+  postUserLastOrder(
+    uid: string,
+    order: { date: string; items: IceCreamItem[] }
+  ) {
+    this.db.object('users/' + uid + '/lastOrder').set(order);
   }
 
   getTastes(): Observable<string[]> {

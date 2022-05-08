@@ -74,7 +74,15 @@ export class AuthService {
           .pipe(first())
           .subscribe((user) => {
             this.store.dispatch(
-              logIn({ uid: result.user!.uid, name: user.name, role: user.role })
+              logIn({
+                uid: result.user!.uid,
+                name: user.name,
+                role: user.role,
+                lastOrderDate:
+                  user.lastOrder?.date === undefined
+                    ? null
+                    : user.lastOrder.date,
+              })
             );
             this.ngZone.run(() => {
               this.router.navigate(['admin']);

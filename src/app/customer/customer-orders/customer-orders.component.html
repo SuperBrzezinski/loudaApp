@@ -1,44 +1,54 @@
-<h1>Zamów na jutro</h1>
+<h1>Zamów na jutro ({{ tomorrowDate }})</h1>
+<div *ngIf="!isTodaysOrderPlaced">
 
-<form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
-  <h2>Dodaj smaki oraz ilość</h2>
-  <div formArrayName="formItems">
-    <div *ngFor="let itm of formItems.controls; let i = index; let first = first; let last = last">
-      <div [formGroupName]="i">
-        <mat-form-field appearance="fill" style="margin-right: 1rem;">
-          <mat-label>Smak</mat-label>
-          <mat-select formControlName="taste" name="taste">
-            <mat-option ngDefaultControl *ngFor="let taste of possibleTastes"
-            formControlName="taste" [value]="taste">
-              {{taste}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <h2>Dodaj smaki oraz ilość</h2>
+    <div formArrayName="formItems">
+      <div *ngFor="let itm of formItems.controls; let i = index; let first = first; let last = last">
+        <div [formGroupName]="i">
+          <mat-form-field appearance="fill" style="margin-right: 1rem;">
+            <mat-label>Smak</mat-label>
+            <mat-select formControlName="taste" name="taste">
+              <mat-option ngDefaultControl *ngFor="let taste of possibleTastes"
+              formControlName="taste" [value]="taste">
+                {{taste}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field appearance="fill" style="margin-right: 1rem;">
-          <mat-label>Jednostka</mat-label>
-          <mat-select formControlName="unit" name="unit">
-            <mat-option ngDefaultControl *ngFor="let unit of possibleUnits" [value]="unit">
-              {{unit}}ml
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field appearance="fill" style="margin-right: 1rem;">
+            <mat-label>Jednostka</mat-label>
+            <mat-select formControlName="unit" name="unit">
+              <mat-option ngDefaultControl *ngFor="let unit of possibleUnits" [value]="unit">
+                {{unit}}ml
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-        <mat-form-field class="example-margin example-width" appearance="fill" style="margin-right: 1rem;">
-          <mat-label>Liczba</mat-label>
-          <input matInput formControlName="quantity" type="number" >
-        </mat-form-field>
+          <mat-form-field class="example-margin example-width" appearance="fill" style="margin-right: 1rem;">
+            <mat-label>Liczba</mat-label>
+            <input matInput formControlName="quantity" type="number" >
+          </mat-form-field>
 
-        <button *ngIf="!first" mat-flat-button color="primary" (click)="removeFormItem(i)" style="margin-right: 1rem;">-</button>
-        <button *ngIf="last" mat-flat-button color="primary"  (click)="addFormItem()">+</button>
+          <button *ngIf="!first" mat-flat-button color="primary" (click)="removeFormItem(i)" style="margin-right: 1rem;">-</button>
+          <button *ngIf="last" mat-flat-button color="primary"  (click)="addFormItem()">+</button>
 
+        </div>
       </div>
+      <button mat-raised-button color="primary" type="submit">Zamów</button>
     </div>
-    <button mat-raised-button color="primary" type="submit">Zamów</button>
-  </div>
 
 
-</form>
-<p>{{ form.value | json }}</p>
+  </form>
+</div>
+
+<div *ngIf="isTodaysOrderPlaced">
+  <p>Wygląda na to, że zamównie na jutro zostało już złożone...</p>
+  <h2>Oto ono:</h2>
+  <ul>
+    <li *ngFor="let item of customerLastOrderItems">smak {{item.taste}} - {{item.amount}}ml</li>
+  </ul>
+</div>
+<!-- <p>{{ form.value | json }}</p> -->
 

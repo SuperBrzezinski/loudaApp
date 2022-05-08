@@ -1,6 +1,6 @@
 <h1>Zamówienia na jutro ({{tomorrowDate}})</h1>
 <app-orders-table [tomorrowDate]="tomorrowDate"></app-orders-table>
 <mat-divider></mat-divider>
-<h1>Smaki w sumie</h1>
-
+<h1 class="mt-3">Smaki w sumie</h1>
+<app-sumup-table [tomorrowDate]="tomorrowDate"></app-sumup-table>
 <button (click)="testState()">sssuuucka</button>

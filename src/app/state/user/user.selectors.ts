@@ -1,6 +1,4 @@
-import { state } from '@angular/animations';
 import { createSelector } from '@ngrx/store';
-import { startOfYesterday } from 'date-fns';
 import { AppState } from '../app.state';
 import { UserState } from './user.reducer';
 
@@ -24,4 +22,8 @@ export const selectUserUid = createSelector(
 export const selectUserName = createSelector(
   selectUser,
   (userState: UserState) => userState.name?.valueOf()
+);
+export const selectUserLastOrderDate = createSelector(
+  selectUser,
+  (userState: UserState) => userState.lastOrderDate
 );

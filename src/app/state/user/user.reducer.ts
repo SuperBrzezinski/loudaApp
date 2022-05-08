@@ -7,6 +7,7 @@ export interface UserState {
   name: string | null;
   role: Role;
   isLoggedIn: boolean;
+  lastOrderDate: string | null;
 }
 
 export const initialState: UserState = {
@@ -14,6 +15,7 @@ export const initialState: UserState = {
   name: null,
   role: null,
   isLoggedIn: false,
+  lastOrderDate: null,
 };
 
 export const userReducer = createReducer(
@@ -22,11 +24,12 @@ export const userReducer = createReducer(
     ...state,
     role: null,
   })),
-  on(logIn, (state, { role, name, uid }) => ({
+  on(logIn, (state, { role, name, uid, lastOrderDate }) => ({
     ...state,
     name: name,
     role: role,
     uid: uid,
+    lastOrderDate: lastOrderDate,
     isLoggedIn: true,
   })),
   on(logOut, (state) => ({
@@ -35,5 +38,6 @@ export const userReducer = createReducer(
     role: null,
     uid: null,
     isLoggedIn: false,
+    lastOrderDate: null,
   }))
 );
