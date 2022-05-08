@@ -1,6 +1,7 @@
 <h1>Zamów na jutro ({{ tomorrowDate }})</h1>
 <div *ngIf="!isTodaysOrderPlaced">
 
+  <div class="text-end"><button mat-raised-button color="primary" (click)="loadLastOrder()">Załaduj ostatnie zamówienie</button></div>
   <form class="example-form" [formGroup]="form" (ngSubmit)="onSubmit()">
 
     <h2>Dodaj smaki oraz ilość</h2>

@@ -21,14 +21,14 @@ export class ApiService {
     return this.db.list<User>('users').valueChanges();
   }
 
+  postUser(uid: string, user: User) {
+    this.db.object('users/' + uid).set(user);
+  }
+
   getUserLastOrderItems(uid: string): Observable<IceCreamItem[]> {
     return this.db
       .list<IceCreamItem>(`users/${uid}/lastOrder/items`)
       .valueChanges();
-  }
-
-  postUser(uid: string, user: User) {
-    this.db.object('users/' + uid).set(user);
   }
 
   postUserLastOrder(
