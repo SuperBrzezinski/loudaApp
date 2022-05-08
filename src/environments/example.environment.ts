@@ -1,3 +1,5 @@
+//Change this file name to 'environment.ts' and add credentials
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -5,13 +7,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyDqF51V1t80JhTnfCnY1ofKP6wGjOpTbIQ',
-    authDomain: 'loudaapp.firebaseapp.com',
-    databaseURL:
-      'https://loudaapp-default-rtdb.europe-west1.firebasedatabase.app',
-    projectId: 'loudaapp',
-    storageBucket: 'loudaapp.appspot.com',
-    messagingSenderId: '890286662392',
+    apiKey: '',
+    authDomain: '',
+    databaseURL: '',
+    projectId: '',
+    storageBucket: '',
+    messagingSenderId: '',
   },
 };
 
