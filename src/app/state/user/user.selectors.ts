@@ -3,10 +3,27 @@ import { AppState } from '../app.state';
 import { UserState } from './user.reducer';
 
 export const selectUser = (state: AppState) => state.user;
-export const selectUserRole = createSelector(selectUser, (state: UserState) =>
-  state.role?.valueOf()
+export const selectGlobalState = (state: AppState) => state;
+export const selectUserRole = createSelector(selectUser, (user: UserState) =>
+  user.role?.valueOf()
 );
 export const selectUserisLoggedIn = createSelector(
   selectUser,
-  (state: UserState) => state.isLoggedIn.valueOf()
+  (userState: UserState) => userState.isLoggedIn.valueOf()
+);
+export const selectUserState = createSelector(
+  selectGlobalState,
+  (state: AppState) => state.user
+);
+export const selectUserUid = createSelector(
+  selectUser,
+  (userState: UserState) => userState.uid?.valueOf()
+);
+export const selectUserName = createSelector(
+  selectUser,
+  (userState: UserState) => userState.name?.valueOf()
+);
+export const selectUserLastOrderDate = createSelector(
+  selectUser,
+  (userState: UserState) => userState.lastOrderDate
 );

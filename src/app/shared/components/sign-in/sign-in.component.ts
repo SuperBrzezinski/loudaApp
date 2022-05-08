@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { FormControl, Validators } from '@angular/forms';
 @Component({
   selector: 'app-sign-in',
