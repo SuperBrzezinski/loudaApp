@@ -1,9 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
@@ -12,22 +8,12 @@ import { ApiService } from 'src/app/shared/services/api.service';
   styleUrls: ['./taste-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TasteTableComponent implements OnInit {
-  public tastes!: string[];
-  displayedColumns: string[] = ['index', 'name'];
-  constructor(
-    private apiService: ApiService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+export class TasteTableComponent {
+  tastes$: Observable<string[]> = this.apiService.getTastes();
+  displayedColumns: string[] = ['index', 'name', 'actions'];
+  constructor(private apiService: ApiService) {}
 
-  ngOnInit(): void {
-    this.init();
-  }
-
-  private init() {
-    this.apiService.getTastes().subscribe((tastes) => {
-      this.tastes = tastes;
-      this.changeDetectorRef.markForCheck();
-    });
+  removeTaste(tasteName: string) {
+    this.apiService.deleteTaste(tasteName);
   }
 }
