@@ -1,7 +1,6 @@
 <h1>Ulubione</h1>
 <ng-container *ngIf="favouriteItems$ | async as favouriteItems" >
 
-  {{ favouriteItems | json}}
 <table mat-table [dataSource]="favouriteItems" class="mat-elevation-z8" style="margin-bottom: 1rem;">
 
   <ng-container matColumnDef="index">
