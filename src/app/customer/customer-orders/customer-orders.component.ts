@@ -7,7 +7,7 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { add, format } from 'date-fns';
-import { first, map, take } from 'rxjs';
+import { first, map, Observable, take } from 'rxjs';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
 import { Order } from 'src/app/shared/models/order.model';
 import { ApiService } from 'src/app/shared/services/api.service';
@@ -38,6 +38,7 @@ export class CustomerOrdersComponent implements OnInit {
   );
   possibleTastes!: string[];
   possibleUnits!: string[];
+  possibleFavourites$?: Observable<IceCreamItem[]>;
   private customerName!: string;
   private customerUid!: string;
   private customerLastOrderDate!: string;
@@ -80,6 +81,14 @@ export class CustomerOrdersComponent implements OnInit {
     this.formItems.removeAt(index);
   }
 
+  addToFavourites(index: number): void {
+    console.log(this.formItems.at(index).value);
+    this.apiService.postFavourite(
+      this.customerUid,
+      this.formItems.at(index).value
+    );
+  }
+
   onSubmit() {
     console.log('sending');
     let orderTemp: Order = {
@@ -117,12 +126,19 @@ export class CustomerOrdersComponent implements OnInit {
                 [Validators.required, Validators.minLength(3)],
               ],
               unit: [item.unit, [Validators.required]],
-              quantity: [String(item.quantity), [Validators.required]],
+              quantity: [item.quantity, [Validators.required]],
             })
           );
         });
         this.changeDetectionRef.markForCheck();
       });
+  }
+
+  chooseFavourite(index: number, item: IceCreamItem) {
+    this.formItems.at(index).get('taste')?.setValue(item.taste);
+    this.formItems.at(index).get('unit')?.setValue(item.unit);
+    this.formItems.at(index).get('quantity')?.setValue(item.quantity);
+    this.changeDetectionRef.markForCheck();
   }
 
   private init() {
@@ -172,6 +188,8 @@ export class CustomerOrdersComponent implements OnInit {
         this.changeDetectionRef.markForCheck();
       });
 
+    this.possibleFavourites$ = this.apiService.getFavourites(this.customerUid);
+
     this.createForm();
   }
 
@@ -181,7 +199,7 @@ export class CustomerOrdersComponent implements OnInit {
         this.formBuild.group({
           taste: ['', [Validators.required, Validators.minLength(3)]],
           unit: ['', Validators.required],
-          quantity: ['', Validators.required],
+          quantity: ['1', Validators.required],
         }),
       ]),
     });

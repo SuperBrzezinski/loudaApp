@@ -6,9 +6,10 @@ import { AngularMaterialModule } from '../shared/angular-material.module';
 import { CustomerOrdersComponent } from './customer-orders/customer-orders.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { FavouritesComponent } from './favourites/favourites.component';
 
 @NgModule({
-  declarations: [CustomerShellComponent, CustomerOrdersComponent],
+  declarations: [CustomerShellComponent, CustomerOrdersComponent, FavouritesComponent],
   imports: [
     CommonModule,
     CustomerRoutingModule,

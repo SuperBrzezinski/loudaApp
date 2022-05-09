@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
-import { Observable } from 'rxjs';
+import {
+  AngularFireDatabase,
+  SnapshotAction,
+} from '@angular/fire/compat/database';
+import { map, Observable, take, tap } from 'rxjs';
 import { IceCreamItem } from '../models/icecreamitem.model';
 import { Order } from '../models/order.model';
 import { User } from '../models/user.model';
@@ -60,5 +63,53 @@ export class ApiService {
 
   postOrder(order: Order, date: string) {
     this.db.list('orders/' + date + '/').push(order);
+  }
+
+  getFavourites(uid: string): Observable<IceCreamItem[]> {
+    return this.db
+      .list<IceCreamItem>('users/' + uid + '/favourites')
+      .valueChanges();
+  }
+
+  getFavourites2(uid: string) {
+    return this.db
+      .list<IceCreamItem>('users/' + uid + '/favourites')
+      .snapshotChanges();
+  }
+
+  postFavourite(uid: string, item: IceCreamItem): void {
+    this.db.list('users/' + uid + '/favourites/').push(item);
+  }
+
+  deleteFavourite(uid: string, itemToBeDeleted: IceCreamItem): void {
+    console.log('zaczynam delete');
+
+    this.db
+      .list('users/' + uid + '/favourites')
+      .snapshotChanges()
+      .pipe(
+        take(1),
+        map((snapshots) => {
+          return snapshots.map((item) => {
+            return { key: item.key?.valueOf(), payload: item.payload.val() };
+          });
+        })
+      )
+      .subscribe((favourites) => {
+        let temp = favourites.filter((element) => {
+          if (
+            (element.payload as IceCreamItem).taste === itemToBeDeleted.taste &&
+            (element.payload as IceCreamItem).quantity ===
+              itemToBeDeleted.quantity &&
+            (element.payload as IceCreamItem).unit === itemToBeDeleted.unit
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        })[0];
+        console.log(temp);
+        this.db.list('users/' + uid + '/favourites').remove(temp.key);
+      });
   }
 }
