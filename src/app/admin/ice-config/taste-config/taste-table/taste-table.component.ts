@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
 } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
@@ -13,8 +14,8 @@ import { ApiService } from 'src/app/shared/services/api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TasteTableComponent implements OnInit {
-  public tastes!: string[];
-  displayedColumns: string[] = ['index', 'name'];
+  tastes$: Observable<string[]> = this.apiService.getTastes();
+  displayedColumns: string[] = ['index', 'name', 'action'];
   constructor(
     private apiService: ApiService,
     private changeDetectorRef: ChangeDetectorRef
@@ -24,10 +25,11 @@ export class TasteTableComponent implements OnInit {
     this.init();
   }
 
-  private init() {
-    this.apiService.getTastes().subscribe((tastes) => {
-      this.tastes = tastes;
-      this.changeDetectorRef.markForCheck();
-    });
+  removeTaste(tasteName: string) {
+    console.log('tasteName: ' + tasteName);
+
+    this.apiService.deleteTaste(tasteName);
   }
+
+  private init() {}
 }
