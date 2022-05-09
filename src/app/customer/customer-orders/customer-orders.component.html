@@ -32,8 +32,9 @@
             <input matInput formControlName="quantity" type="number" >
           </mat-form-field>
 
-          <button *ngIf="!first" mat-flat-button color="primary" (click)="removeFormItem(i)" style="margin-right: 1rem;">-</button>
-          <button *ngIf="last" mat-flat-button color="primary"  (click)="addFormItem()">+</button>
+          <button *ngIf="!first" mat-flat-button type="button" color="primary" (click)="removeFormItem(i)" style="margin-right: 1rem;">-</button>
+          <button *ngIf="last" mat-flat-button type="button" color="primary"  (click)="addFormItem()" style="margin-right: 1rem;">+</button>
+          <button mat-flat-button color="primary" type="button" (click)="addToFavourites(i)"><mat-icon>favorite</mat-icon></button>
 
         </div>
       </div>

@@ -61,4 +61,8 @@ export class ApiService {
   postOrder(order: Order, date: string) {
     this.db.list('orders/' + date + '/').push(order);
   }
+
+  postFavourite(uid: string, item: IceCreamItem): void {
+    this.db.list('users/' + uid + '/favourites/').push(item);
+  }
 }

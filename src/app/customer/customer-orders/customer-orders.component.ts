@@ -80,6 +80,14 @@ export class CustomerOrdersComponent implements OnInit {
     this.formItems.removeAt(index);
   }
 
+  addToFavourites(index: number): void {
+    console.log(this.formItems.at(index).value);
+    this.apiService.postFavourite(
+      this.customerUid,
+      this.formItems.at(index).value
+    );
+  }
+
   onSubmit() {
     console.log('sending');
     let orderTemp: Order = {
@@ -117,7 +125,7 @@ export class CustomerOrdersComponent implements OnInit {
                 [Validators.required, Validators.minLength(3)],
               ],
               unit: [item.unit, [Validators.required]],
-              quantity: [String(item.quantity), [Validators.required]],
+              quantity: [item.quantity, [Validators.required]],
             })
           );
         });
@@ -181,7 +189,7 @@ export class CustomerOrdersComponent implements OnInit {
         this.formBuild.group({
           taste: ['', [Validators.required, Validators.minLength(3)]],
           unit: ['', Validators.required],
-          quantity: ['', Validators.required],
+          quantity: ['1', Validators.required],
         }),
       ]),
     });
