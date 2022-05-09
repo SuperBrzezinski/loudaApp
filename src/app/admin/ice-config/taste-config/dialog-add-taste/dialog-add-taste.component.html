@@ -1,14 +1,15 @@
 <h1 mat-dialog-title>Dodaj smak</h1>
 <mat-divider></mat-divider>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
 <div mat-dialog-content>
-  <form [formGroup]="form">
     <mat-form-field appearance="fill">
       <mat-label>Nazwa smaku</mat-label>
       <input matInput formControlName="name" placeholder="Smak porażki" required>
+      <mat-error *ngIf="form.controls['name'].invalid">Nazwa smaku zbyt krótka</mat-error>
     </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="cancelDialog()">Anuluj</button>
-  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Dodaj</button>
-</div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button type="button" (click)="cancelDialog()">Anuluj</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.controls['name'].errors">Dodaj</button>
+  </div>
+</form>
