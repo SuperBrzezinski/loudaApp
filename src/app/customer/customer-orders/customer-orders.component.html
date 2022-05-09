@@ -34,7 +34,18 @@
 
           <button *ngIf="!first" mat-flat-button type="button" color="primary" (click)="removeFormItem(i)" style="margin-right: 1rem;">-</button>
           <button *ngIf="last" mat-flat-button type="button" color="primary"  (click)="addFormItem()" style="margin-right: 1rem;">+</button>
-          <button mat-flat-button color="primary" type="button" (click)="addToFavourites(i)"><mat-icon>favorite</mat-icon></button>
+          <button mat-flat-button color="primary" type="button" (click)="addToFavourites(i)" style="margin-right: 1rem;"><mat-icon>favorite</mat-icon></button>
+
+          <ng-container *ngIf="possibleFavourites$ | async as possibleFavourites">
+            <mat-form-field appearance="fill" style="width: 4rem">
+              <mat-label><mat-icon>favorite</mat-icon></mat-label>
+              <mat-select >
+                <mat-option ngDefaultControl *ngFor="let favourite of possibleFavourites" (click)="chooseFavourite(i, favourite)">
+                  Smak {{favourite.taste}} - {{favourite.unit}}ml * {{favourite.quantity}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
 
         </div>
       </div>

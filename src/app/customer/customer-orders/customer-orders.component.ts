@@ -7,7 +7,7 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { add, format } from 'date-fns';
-import { first, map, take } from 'rxjs';
+import { first, map, Observable, take } from 'rxjs';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
 import { Order } from 'src/app/shared/models/order.model';
 import { ApiService } from 'src/app/shared/services/api.service';
@@ -38,6 +38,7 @@ export class CustomerOrdersComponent implements OnInit {
   );
   possibleTastes!: string[];
   possibleUnits!: string[];
+  possibleFavourites$?: Observable<IceCreamItem[]>;
   private customerName!: string;
   private customerUid!: string;
   private customerLastOrderDate!: string;
@@ -133,6 +134,13 @@ export class CustomerOrdersComponent implements OnInit {
       });
   }
 
+  chooseFavourite(index: number, item: IceCreamItem) {
+    this.formItems.at(index).get('taste')?.setValue(item.taste);
+    this.formItems.at(index).get('unit')?.setValue(item.unit);
+    this.formItems.at(index).get('quantity')?.setValue(item.quantity);
+    this.changeDetectionRef.markForCheck();
+  }
+
   private init() {
     this.store
       .select(selectUserName)
@@ -179,6 +187,8 @@ export class CustomerOrdersComponent implements OnInit {
         this.customerLastOrderItems = lastOrderedItems;
         this.changeDetectionRef.markForCheck();
       });
+
+    this.possibleFavourites$ = this.apiService.getFavourites(this.customerUid);
 
     this.createForm();
   }
