@@ -1,4 +1,4 @@
-<ng-container *ngIf="units$ | async as units">
+<ng-container *ngIf="units$ | async as units; else spinner">
   <table mat-table [dataSource]="units" class="mat-elevation-z8" style="margin-bottom: 1rem;">
 
     <ng-container matColumnDef="index">
@@ -20,3 +20,6 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 </ng-container>
+<ng-template #spinner >
+  <mat-spinner></mat-spinner>
+</ng-template>
