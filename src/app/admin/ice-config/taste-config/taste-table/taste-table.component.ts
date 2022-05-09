@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/shared/services/api.service';
 
@@ -13,23 +8,12 @@ import { ApiService } from 'src/app/shared/services/api.service';
   styleUrls: ['./taste-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TasteTableComponent implements OnInit {
+export class TasteTableComponent {
   tastes$: Observable<string[]> = this.apiService.getTastes();
-  displayedColumns: string[] = ['index', 'name', 'action'];
-  constructor(
-    private apiService: ApiService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    this.init();
-  }
+  displayedColumns: string[] = ['index', 'name', 'actions'];
+  constructor(private apiService: ApiService) {}
 
   removeTaste(tasteName: string) {
-    console.log('tasteName: ' + tasteName);
-
     this.apiService.deleteTaste(tasteName);
   }
-
-  private init() {}
 }

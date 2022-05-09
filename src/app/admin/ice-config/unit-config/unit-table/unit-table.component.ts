@@ -1,9 +1,5 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/shared/services/api.service';
 
 @Component({
@@ -12,22 +8,13 @@ import { ApiService } from 'src/app/shared/services/api.service';
   styleUrls: ['./unit-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UnitTableComponent implements OnInit {
-  public units!: string[];
-  displayedColumns: string[] = ['index', 'name'];
-  constructor(
-    private apiService: ApiService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+export class UnitTableComponent {
+  units$: Observable<string[]> = this.apiService.getUnits();
+  displayedColumns: string[] = ['index', 'name', 'actions'];
 
-  ngOnInit(): void {
-    this.init();
-  }
+  constructor(private apiService: ApiService) {}
 
-  private init() {
-    this.apiService.getUnits().subscribe((units) => {
-      this.units = units;
-      this.changeDetectorRef.markForCheck();
-    });
+  removeUnit(unit: string) {
+    this.apiService.deleteUnit(unit);
   }
 }

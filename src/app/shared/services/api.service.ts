@@ -81,6 +81,30 @@ export class ApiService {
     this.db.list<string>('ice/units').push(unitValue);
   }
 
+  deleteUnit(unitToBeDeleted: string) {
+    this.db
+      .list<string>('ice/units')
+      .snapshotChanges()
+      .pipe(
+        take(1),
+        map((snapshots) => {
+          return snapshots.map((item) => {
+            return { key: item.key?.valueOf(), payload: item.payload.val() };
+          });
+        })
+      )
+      .subscribe((tastes) => {
+        let temp = tastes.filter((element) => {
+          if ((element.payload as string) === unitToBeDeleted) {
+            return true;
+          } else {
+            return false;
+          }
+        })[0];
+        this.db.list('ice/units').remove(temp.key);
+      });
+  }
+
   getOrders(date: string): Observable<Order[]> {
     return this.db.list<Order>('orders/' + date).valueChanges();
   }
