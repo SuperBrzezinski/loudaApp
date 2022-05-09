@@ -2,34 +2,29 @@
   <div class="container-fluid">
     <div class="row d-flex justify-content-center" style="height: 100vh;">
       <div class="col-auto">
-        <!-- <h1 class="text-center">Zaloguj się</h1> -->
         <div class="text-center" style="font-size: 60px; margin-top:50px; margin-bottom: 50px;">🍨</div>
         <p class="text-center">No i zrób mi kurcze...</p>
         <h1 class="text-center">Louda</h1>
         <div class="example-container">
-          <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput #userName placeholder="admin@admin.pl" [formControl]="email" required>
-            <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
-          </mat-form-field>
-        </div>
-        <div class="example-container">
-          <mat-form-field appearance="fill">
-            <mat-label>Hasło</mat-label>
-            <input matInput type="password" #userPassword placeholder="admin123" required>
-            <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
-          </mat-form-field>
-        </div>
-        <div class="formGroup">
-          <!-- <input type="text" class="formControl" placeholder="Username" #userName required> -->
-        </div>
-        <div class="formGroup">
-          <!-- <input type="password" class="formControl" placeholder="Password" #userPassword required> -->
-        </div>
-        <!-- Calling SignIn Api from AuthService -->
-        <div class="formGroup text-center">
-          <!-- <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.SignIn(userName.value, userPassword.value)"> -->
-          <button mat-raised-button color="primary" (click)="authService.SignIn(userName.value, userPassword.value)">Zaloguj się</button>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div>
+              <mat-form-field appearance="fill">
+                <mat-label>Email</mat-label>
+                <input matInput type="email" placeholder="admin@admin.pl" formControlName="email">
+                <mat-error *ngIf="form.controls['email'].invalid">Niepoprawny adres email</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field appearance="fill">
+                <mat-label>Hasło</mat-label>
+                <input matInput type="password" placeholder="admin123" formControlName="password">
+                <mat-error *ngIf="form.controls['password'].invalid">Hasło zbyt krótkie</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="text-center">
+              <button mat-raised-button color="primary" type="submit" [disabled]="form.controls['email'].errors || form.controls['password'].errors">Zaloguj się</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
