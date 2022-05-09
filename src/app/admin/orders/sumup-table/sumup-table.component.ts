@@ -23,6 +23,7 @@ export class SumupTableComponent implements OnInit {
   summedUpOrders$!: Observable<SummedUpTaste[]>;
   summedUpTastes!: SummedUpTaste[];
   displayedColumns: string[] = ['index', 'taste', 'amount'];
+
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {

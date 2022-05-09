@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { User } from 'src/app/shared/models/user.model';
 import { CustomersListService } from '../customers-list.service';
-import { ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-customer-table',
@@ -9,22 +9,9 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./customer-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomerTableComponent implements OnInit {
-  public customers!: User[];
+export class CustomerTableComponent {
+  customers$: Observable<User[]> = this.customerListService.getCustomers();
   displayedColumns: string[] = ['index', 'name', 'email'];
-  constructor(
-    private customerListService: CustomersListService,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
 
-  ngOnInit(): void {
-    this.init();
-  }
-
-  private init() {
-    this.customerListService.getCustomers().subscribe((customers) => {
-      this.customers = customers;
-      this.changeDetectorRef.markForCheck();
-    });
-  }
+  constructor(private customerListService: CustomersListService) {}
 }

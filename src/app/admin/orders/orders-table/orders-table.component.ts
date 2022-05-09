@@ -24,7 +24,7 @@ interface OrderByCustomer {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersTableComponent implements OnInit {
-  public orders2$!: Observable<OrderByCustomer[]>;
+  public orders$!: Observable<OrderByCustomer[]>;
   @Input() tomorrowDate!: string;
   displayedColumns: string[] = ['index', 'name', 'order'];
   constructor(private apiService: ApiService) {}
@@ -34,7 +34,7 @@ export class OrdersTableComponent implements OnInit {
   }
 
   private init() {
-    this.orders2$ = this.apiService.getOrders(this.tomorrowDate).pipe(
+    this.orders$ = this.apiService.getOrders(this.tomorrowDate).pipe(
       map((orders) => {
         return orders.map((order) => {
           return {

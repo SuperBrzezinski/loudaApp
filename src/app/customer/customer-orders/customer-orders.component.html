@@ -8,7 +8,7 @@
     <div formArrayName="formItems">
       <div *ngFor="let itm of formItems.controls; let i = index; let first = first; let last = last">
         <div [formGroupName]="i">
-          <mat-form-field appearance="fill" style="margin-right: 1rem;">
+          <mat-form-field appearance="fill" style="margin-right: 1rem; width: 8rem;">
             <mat-label>Smak</mat-label>
             <mat-select formControlName="taste" name="taste">
               <mat-option ngDefaultControl *ngFor="let taste of possibleTastes"
@@ -18,7 +18,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" style="margin-right: 1rem;">
+          <mat-form-field appearance="fill" style="margin-right: 1rem; width: 8rem;">
             <mat-label>Jednostka</mat-label>
             <mat-select formControlName="unit" name="unit">
               <mat-option ngDefaultControl *ngFor="let unit of possibleUnits" [value]="unit">
@@ -27,7 +27,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field class="example-margin example-width" appearance="fill" style="margin-right: 1rem;">
+          <mat-form-field class="example-margin example-width" appearance="fill" style="margin-right: 1rem; width: 8rem;">
             <mat-label>Liczba</mat-label>
             <input matInput formControlName="quantity" type="number" >
           </mat-form-field>
