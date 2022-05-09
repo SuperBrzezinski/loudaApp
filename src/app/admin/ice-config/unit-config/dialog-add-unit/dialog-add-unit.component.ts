@@ -31,7 +31,7 @@ export class DialogAddUnitComponent implements OnInit {
   private createForm() {
     this.form = this.formBuild.group({
       value: this.formBuild.control({ value: '', disabled: false }, [
-        Validators.minLength(3),
+        Validators.pattern('^[0-9]*$'),
         Validators.required,
       ]),
     });

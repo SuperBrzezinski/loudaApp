@@ -6,12 +6,14 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { throws } from 'assert';
 import { add, format } from 'date-fns';
 import { first, map, Observable, take } from 'rxjs';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
 import { Order } from 'src/app/shared/models/order.model';
 import { ApiService } from 'src/app/shared/services/api.service';
 import { AppState } from 'src/app/state/app.state';
+import { lastOrderDateUpdate } from 'src/app/state/user/user.actions';
 import {
   selectUserLastOrderDate,
   selectUserName,
@@ -41,7 +43,7 @@ export class CustomerOrdersComponent implements OnInit {
   possibleFavourites$?: Observable<IceCreamItem[]>;
   private customerName!: string;
   private customerUid!: string;
-  private customerLastOrderDate!: string;
+  public customerLastOrderDate!: string;
   public customerLastOrderItems!: CustomerLastOrderItem[];
   form!: FormGroup;
 
@@ -68,7 +70,7 @@ export class CustomerOrdersComponent implements OnInit {
     return this.formBuild.group({
       taste: ['', [Validators.required, Validators.minLength(3)]],
       unit: ['', [Validators.required]],
-      quantity: ['', [Validators.required]],
+      quantity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     });
   }
 
@@ -99,6 +101,9 @@ export class CustomerOrdersComponent implements OnInit {
 
     let lastOrder = { date: this.tomorrowDate, items: this.formItems.value };
     this.apiService.postUserLastOrder(this.customerUid, lastOrder);
+    this.store.dispatch(
+      lastOrderDateUpdate({ lastOrderDate: this.tomorrowDate })
+    );
   }
 
   loadLastOrder(): void {
@@ -142,6 +147,7 @@ export class CustomerOrdersComponent implements OnInit {
   }
 
   private init() {
+    // this.formItems.controls[0].invalid
     this.store
       .select(selectUserName)
       .pipe(first())
@@ -199,7 +205,10 @@ export class CustomerOrdersComponent implements OnInit {
         this.formBuild.group({
           taste: ['', [Validators.required, Validators.minLength(3)]],
           unit: ['', Validators.required],
-          quantity: ['1', Validators.required],
+          quantity: [
+            '1',
+            [Validators.required, Validators.pattern('^[0-9]*$')],
+          ],
         }),
       ]),
     });

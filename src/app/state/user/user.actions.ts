@@ -14,3 +14,8 @@ export const logIn = createAction(
 );
 
 export const logOut = createAction('[Navbar - Log Out] Log Out');
+
+export const lastOrderDateUpdate = createAction(
+  '[Customer Order Form - Submit] lastOrderDate Update',
+  props<{ lastOrderDate: string }>()
+);

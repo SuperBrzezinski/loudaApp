@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
@@ -8,15 +8,35 @@ import { FormControl, Validators } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent implements OnInit {
-  email = new FormControl('', [Validators.required, Validators.email]);
+  public form!: FormGroup;
 
-  getErrorMessage() {
-    if (this.email.hasError('required')) {
-      return 'You must enter a value';
-    }
+  constructor(
+    public authService: AuthService,
+    private formBuild: FormBuilder
+  ) {}
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+  ngOnInit() {
+    this.createForm();
   }
-  constructor(public authService: AuthService) {}
-  ngOnInit() {}
+
+  onSubmit() {
+    this.authService.SignIn(
+      this.form.controls['email'].value,
+      this.form.controls['password'].value
+    );
+  }
+
+  private createForm() {
+    this.form = this.formBuild.group({
+      email: this.formBuild.control({ value: '', disabled: false }, [
+        Validators.minLength(3),
+        Validators.email,
+        Validators.required,
+      ]),
+      password: this.formBuild.control({ value: '', disabled: false }, [
+        Validators.minLength(5),
+        Validators.required,
+      ]),
+    });
+  }
 }

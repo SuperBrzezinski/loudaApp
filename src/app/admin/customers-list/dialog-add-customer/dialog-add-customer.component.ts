@@ -20,9 +20,11 @@ export class DialogAddCustomerComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
   }
+
   cancelDialog(): void {
     this.dialogRef.close();
   }
+
   onSubmit() {
     this.customerSignUpService.signUp(
       this.form.get('name')!.value,
@@ -40,6 +42,7 @@ export class DialogAddCustomerComponent implements OnInit {
       ]),
       email: this.formBuild.control({ value: '', disabled: false }, [
         Validators.minLength(5),
+        Validators.email,
         Validators.required,
       ]),
       password: this.formBuild.control({ value: '', disabled: false }, [

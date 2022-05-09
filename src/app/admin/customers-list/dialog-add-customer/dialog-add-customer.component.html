@@ -1,22 +1,25 @@
 <h1 mat-dialog-title>Dodaj klienta</h1>
 <mat-divider></mat-divider>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
 <div mat-dialog-content>
-  <form [formGroup]="form">
     <mat-form-field appearance="fill">
       <mat-label>Nazwa klienta</mat-label>
       <input matInput formControlName="name" placeholder="Mobbyn sp. z.o.o." required>
+      <mat-error *ngIf="form.controls['name'].invalid">Nazwa klienta zbyt krótka</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="mt-3">
       <mat-label>Email klienta</mat-label>
       <input matInput formControlName="email" placeholder="belmondawg@poppyn.gda.pl" required>
+      <mat-error *ngIf="form.controls['email'].invalid">Email niepoprawny</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" class="mt-3">
       <mat-label>Hasło klienta</mat-label>
       <input matInput formControlName="password" placeholder="KoleżankoToTrójmiastoANieSaoPaulo" required>
+      <mat-error *ngIf="form.controls['password'].invalid">Hasło zbyt krótkie</mat-error>
     </mat-form-field>
-  </form>
-</div>
-<div mat-dialog-actions align="end">
-  <button mat-raised-button (click)="cancelDialog()">Anuluj</button>
-  <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">Zarejestruj</button>
-</div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button type="button" (click)="cancelDialog()">Anuluj</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.controls['name'].errors || form.controls['email'].errors || form.controls['password'].errors">Zarejestruj</button>
+  </div>
+</form>

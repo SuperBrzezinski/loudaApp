@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
+import { startOfYesterday } from 'date-fns';
 import { Role } from 'src/app/shared/models/role.model';
-import { logIn, logOut, removeRole } from './user.actions';
+import { lastOrderDateUpdate, logIn, logOut, removeRole } from './user.actions';
 
 export interface UserState {
   uid: string | null;
@@ -39,5 +40,9 @@ export const userReducer = createReducer(
     uid: null,
     isLoggedIn: false,
     lastOrderDate: null,
+  })),
+  on(lastOrderDateUpdate, (state, { lastOrderDate }) => ({
+    ...state,
+    lastOrderDate: lastOrderDate,
   }))
 );
