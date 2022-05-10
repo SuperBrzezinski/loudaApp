@@ -24,7 +24,9 @@ export class DialogAddTasteComponent implements OnInit {
     this.dialogRef.close();
   }
   onSubmit() {
-    this.apiService.postTaste(this.form.get('name')!.value);
+    this.apiService
+      .postTaste(this.form.get('name')!.value)
+      .subscribe((val) => alert(val.body));
     this.cancelDialog();
   }
 

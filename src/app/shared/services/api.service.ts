@@ -3,9 +3,13 @@ import {
   AngularFireDatabase,
   SnapshotAction,
 } from '@angular/fire/compat/database';
-import { map, Observable, take, tap } from 'rxjs';
+import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { IceCreamItem } from '../models/icecreamitem.model';
 import { Order } from '../models/order.model';
+import {
+  ResponseMessage,
+  ResponseMessageStatus,
+} from '../models/response-message.model';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -45,8 +49,24 @@ export class ApiService {
     return this.db.list<string>('ice/tastes').valueChanges();
   }
 
-  postTaste(tasteName: string) {
-    this.db.list<string>('ice/tastes').push(tasteName);
+  postTaste(tasteName: string): Observable<ResponseMessage> {
+    return this.getTastes().pipe(
+      switchMap((tastes) => {
+        if (tastes.findIndex((element) => element === tasteName) === -1) {
+          this.db.list<string>('ice/tastes').push(tasteName);
+          return of({
+            status: 'Success' as ResponseMessageStatus,
+            body: 'Smak dodany!',
+          });
+        } else {
+          return of({
+            status: 'Fail' as ResponseMessageStatus,
+            body: 'Podany smak już istnieje!',
+          });
+        }
+      }),
+      take(1)
+    );
   }
 
   deleteTaste(tasteToBeDeleted: string) {
