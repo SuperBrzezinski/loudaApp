@@ -32,17 +32,11 @@ export class AdminGuard implements CanActivate {
     | UrlTree {
     return this.store.select(selectUserRole).pipe(
       map((role) => {
-        // console.log(role);
-
         if (role !== 'admin') {
           this.router.navigate(['customer']);
         }
         return true;
       })
     );
-    // if (this.authService.isAdmin !== true) {
-    //   this.router.navigate(['customer']);
-    // }
-    // return true;
   }
 }

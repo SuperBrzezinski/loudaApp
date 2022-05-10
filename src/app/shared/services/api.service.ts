@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFireDatabase,
-  SnapshotAction,
-} from '@angular/fire/compat/database';
+import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { IceCreamItem } from '../models/icecreamitem.model';
 import { Order } from '../models/order.model';
@@ -32,18 +29,12 @@ export class ApiService {
     this.db.object('users/' + uid).set(user);
   }
 
-  getUserLastOrderItems(uid: string): Observable<IceCreamItem[]> {
-    return this.db
-      .list<IceCreamItem>(`users/${uid}/lastOrder/items`)
-      .valueChanges();
-  }
-
-  postUserLastOrder(
-    uid: string,
-    order: { date: string; items: IceCreamItem[] }
-  ) {
-    this.db.object('users/' + uid + '/lastOrder').set(order);
-  }
+  //to pewnie da sie wywalic
+  // getUserLastOrderItems(uid: string): Observable<IceCreamItem[]> {
+  //   return this.db
+  //     .list<IceCreamItem>(`users/${uid}/lastOrder/items`)
+  //     .valueChanges();
+  // }
 
   getTastes(): Observable<string[]> {
     return this.db.list<string>('ice/tastes').valueChanges();
@@ -145,24 +136,15 @@ export class ApiService {
     return this.db.list<Order>('orders/' + date).valueChanges();
   }
 
-  postOrder(order: Order, date: string) {
-    this.db.list('orders/' + date + '/').push(order);
-  }
+  // to powinno dac sie wywalic
+  // postOrder(order: Order, date: string) {
+  //   this.db.list('orders/' + date + '/').push(order);
+  // }
 
   getFavourites(uid: string): Observable<IceCreamItem[]> {
     return this.db
       .list<IceCreamItem>('users/' + uid + '/favourites')
       .valueChanges();
-  }
-
-  getFavourites2(uid: string) {
-    return this.db
-      .list<IceCreamItem>('users/' + uid + '/favourites')
-      .snapshotChanges();
-  }
-
-  postFavourite(uid: string, item: IceCreamItem): void {
-    this.db.list('users/' + uid + '/favourites/').push(item);
   }
 
   deleteFavourite(uid: string, itemToBeDeleted: IceCreamItem): void {
@@ -195,5 +177,17 @@ export class ApiService {
         console.log(temp);
         this.db.list('users/' + uid + '/favourites').remove(temp.key);
       });
+  }
+
+  getListAsObservable<T>(path: string): Observable<T[]> {
+    return this.db.list<T>(path).valueChanges();
+  }
+
+  pushToList<T>(path: string, itemToPush: T): void {
+    this.db.list(path).push(itemToPush);
+  }
+
+  postObject<T>(path: string, objectToPost: T): void {
+    this.db.object(path).set(objectToPost);
   }
 }

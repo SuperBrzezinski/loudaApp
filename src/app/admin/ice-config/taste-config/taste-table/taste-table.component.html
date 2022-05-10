@@ -13,7 +13,9 @@
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Akcje </th>
-      <td mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="removeTaste(element)">Usuń smak</button> </td>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="warn" (click)="removeTaste(element)" [disabled]="tastes.length < 2">Usuń smak</button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

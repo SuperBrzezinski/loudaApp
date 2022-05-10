@@ -13,7 +13,7 @@
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Akcje </th>
-      <td mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="removeUnit(element)">Usuń jednostkę</button> </td>
+      <td mat-cell *matCellDef="let element"> <button mat-raised-button color="warn" (click)="removeUnit(element)" [disabled]="units.length < 2">Usuń jednostkę</button> </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

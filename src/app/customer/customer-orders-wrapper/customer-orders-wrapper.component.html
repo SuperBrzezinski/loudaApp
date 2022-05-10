@@ -1,0 +1,11 @@
+<ng-container *ngIf="!isTodaysOrderPlaced; else orderPlaced">
+  <h1>Zamów na jutro ({{ tomorrowDate }})</h1>
+  <app-order-form></app-order-form>
+</ng-container>
+
+<ng-template #orderPlaced>
+  <h1>Zamówienie na jutro ({{ tomorrowDate}})</h1>
+  <p>...już zostało złożone :)</p>
+  <h2>Oto ono:</h2>
+  <app-placed-order></app-placed-order>
+</ng-template>
