@@ -10,12 +10,18 @@ import { AuthService } from 'src/app/shared/services/auth.service';
 })
 export class CustomerShellComponent implements OnInit {
   public isNavbarCollapsed: boolean = false;
-  constructor(public authService: AuthService, private router: Router) {}
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.router.navigate(['order']);
   }
+
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  logOut() {
+    this.authService.SignOut();
   }
 }

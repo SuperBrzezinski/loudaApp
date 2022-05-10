@@ -1,11 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 @Component({
@@ -16,11 +9,18 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 export class AdminShellComponent implements OnInit {
   public isNavbarCollapsed: boolean = false;
-  constructor(public authService: AuthService, private router: Router) {}
+
+  constructor(private authService: AuthService, private router: Router) {}
+
   ngOnInit(): void {
     this.router.navigate(['orders']);
   }
+
   toggleNavbar() {
     this.isNavbarCollapsed = !this.isNavbarCollapsed;
+  }
+
+  logOut() {
+    this.authService.SignOut();
   }
 }
