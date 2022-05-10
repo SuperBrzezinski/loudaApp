@@ -11,6 +11,7 @@ import { ApiService } from 'src/app/shared/services/api.service';
 })
 export class DialogAddUnitComponent implements OnInit {
   public form!: FormGroup;
+
   constructor(
     public dialogRef: MatDialogRef<DialogAddUnitComponent>,
     private formBuild: FormBuilder,
@@ -24,7 +25,10 @@ export class DialogAddUnitComponent implements OnInit {
     this.dialogRef.close();
   }
   onSubmit() {
-    this.apiService.postUnit(this.form.get('value')!.value);
+    this.apiService
+      .postUnit(this.form.get('value')!.value)
+      .subscribe((msg) => console.log(msg.body));
+
     this.cancelDialog();
   }
 

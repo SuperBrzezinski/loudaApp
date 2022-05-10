@@ -97,8 +97,24 @@ export class ApiService {
     return this.db.list<string>('ice/units').valueChanges();
   }
 
-  postUnit(unitValue: string) {
-    this.db.list<string>('ice/units').push(unitValue);
+  postUnit(unitValue: string): Observable<ResponseMessage> {
+    return this.getUnits().pipe(
+      switchMap((units) => {
+        if (units.findIndex((element) => element === unitValue) === -1) {
+          this.db.list<string>('ice/units').push(unitValue);
+          return of({
+            status: 'Success' as ResponseMessageStatus,
+            body: 'Jednostka dodana!',
+          });
+        } else {
+          return of({
+            status: 'Fail' as ResponseMessageStatus,
+            body: 'Podana jednostka już istnieje!',
+          });
+        }
+      }),
+      take(1)
+    );
   }
 
   deleteUnit(unitToBeDeleted: string) {
