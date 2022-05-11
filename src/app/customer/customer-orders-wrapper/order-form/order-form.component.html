@@ -29,7 +29,7 @@
             <mat-label>Jednostka</mat-label>
             <mat-select formControlName="unit" name="unit">
               <mat-option ngDefaultControl *ngFor="let unit of possibleUnits" [value]="unit">
-                {{unit}}ml
+                {{unit | iceAmount}}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="formItems.controls[i].get('unit')?.invalid">Wybierz jednostkę</mat-error>
@@ -54,7 +54,7 @@
               <mat-label><mat-icon>favorite</mat-icon></mat-label>
               <mat-select >
                 <mat-option ngDefaultControl *ngFor="let favourite of possibleFavourites" (click)="chooseFavourite(i, favourite)">
-                  Smak {{favourite.taste}} - {{favourite.unit}}ml * {{favourite.quantity}}
+                  Smak {{favourite.taste}} - {{favourite.unit | iceAmount}} * {{favourite.quantity}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

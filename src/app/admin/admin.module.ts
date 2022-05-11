@@ -7,7 +7,7 @@ import { DialogAddCustomerComponent } from './admin-customer-wrapper/dialog-add-
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminRoutingModule } from './admin-routing.module';
-import { AngularMaterialModule } from '../shared/angular-material.module';
+// import { AngularMaterialModule } from '../shared/angular-material/angular-material.module';
 import { IceConfigWrapperComponent } from './ice-config-wrapper/ice-config-wrapper.component';
 import { TasteConfigComponent } from './ice-config-wrapper/taste-config/taste-config.component';
 import { TasteTableComponent } from './ice-config-wrapper/taste-config/taste-table/taste-table.component';
@@ -18,7 +18,7 @@ import { DialogAddUnitComponent } from './ice-config-wrapper/unit-config/dialog-
 import { OrdersComponent } from './orders/orders.component';
 import { OrdersTableComponent } from './orders/orders-table/orders-table.component';
 import { SumupTableComponent } from './orders/sumup-table/sumup-table.component';
-import { IceAmountPipe } from '../shared/pipes/ice-amount.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -36,11 +36,10 @@ import { IceAmountPipe } from '../shared/pipes/ice-amount.pipe';
     OrdersComponent,
     OrdersTableComponent,
     SumupTableComponent,
-    IceAmountPipe,
   ],
   imports: [
     CommonModule,
-    AngularMaterialModule,
+    SharedModule,
     RouterModule,
     ReactiveFormsModule,
     AdminRoutingModule,
