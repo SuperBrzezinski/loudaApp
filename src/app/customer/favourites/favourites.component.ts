@@ -1,12 +1,7 @@
-import { JsonPipe } from '@angular/common';
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { SnapshotAction } from '@angular/fire/compat/database';
-import { Store } from '@ngrx/store';
-import { Observable, take } from 'rxjs';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
-import { ApiService } from 'src/app/shared/services/api.service';
-import { AppState } from 'src/app/state/app.state';
-import { selectUserUid } from 'src/app/state/user/user.selectors';
+import { CustomerService } from '../customer.service';
 
 @Component({
   selector: 'app-favourites',
@@ -14,28 +9,15 @@ import { selectUserUid } from 'src/app/state/user/user.selectors';
   styleUrls: ['./favourites.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FavouritesComponent implements OnInit {
+export class FavouritesComponent {
   private customerUid!: string;
-  favouriteItems$!: Observable<IceCreamItem[]>;
+  favouriteItems$: Observable<IceCreamItem[]> =
+    this.customerService.getFavourites();
   displayedColumns: string[] = ['index', 'taste', 'unit', 'quantity', 'action'];
 
-  constructor(private apiService: ApiService, private store: Store<AppState>) {}
-
-  ngOnInit(): void {
-    this.store
-      .select(selectUserUid)
-      .pipe(take(1))
-      .subscribe((uid) => {
-        console.log((this.customerUid = uid as string));
-
-        this.customerUid = uid as string;
-      });
-    this.favouriteItems$ = this.apiService.getFavourites(this.customerUid);
-  }
+  constructor(private customerService: CustomerService) {}
 
   removeFavourite(item: IceCreamItem) {
-    console.log(`przed przekazaniem: ${JSON.stringify(item)}`);
-
-    this.apiService.deleteFavourite(this.customerUid, item);
+    this.customerService.deleteFavourite(item);
   }
 }

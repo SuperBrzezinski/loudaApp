@@ -3,10 +3,7 @@ import {
   AngularFireDatabase,
   SnapshotAction,
 } from '@angular/fire/compat/database';
-import { map, Observable, take, tap } from 'rxjs';
-import { IceCreamItem } from '../models/icecreamitem.model';
-import { Order } from '../models/order.model';
-import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,150 +11,29 @@ import { User } from '../models/user.model';
 export class ApiService {
   constructor(private db: AngularFireDatabase) {}
 
-  getUser(uid: string): Observable<User> {
-    return this.db
-      .object<User>('users/' + uid)
-      .valueChanges() as Observable<User>;
+  getListAsObservable<T>(path: string): Observable<T[]> {
+    return this.db.list<T>(path).valueChanges();
   }
 
-  getUsers(): Observable<User[]> {
-    return this.db.list<User>('users').valueChanges();
+  getListAsSnapshotActionObservable<T>(
+    path: string
+  ): Observable<SnapshotAction<T>[]> {
+    return this.db.list<T>(path).snapshotChanges();
   }
 
-  postUser(uid: string, user: User) {
-    this.db.object('users/' + uid).set(user);
+  pushToList<T>(path: string, itemToPush: T): void {
+    this.db.list(path).push(itemToPush);
   }
 
-  getUserLastOrderItems(uid: string): Observable<IceCreamItem[]> {
-    return this.db
-      .list<IceCreamItem>(`users/${uid}/lastOrder/items`)
-      .valueChanges();
+  postObject<T>(path: string, objectToPost: T): void {
+    this.db.object(path).set(objectToPost);
   }
 
-  postUserLastOrder(
-    uid: string,
-    order: { date: string; items: IceCreamItem[] }
-  ) {
-    this.db.object('users/' + uid + '/lastOrder').set(order);
+  getObjectAsObservavble<T>(path: string): Observable<T | null> {
+    return this.db.object<T>(path).valueChanges();
   }
 
-  getTastes(): Observable<string[]> {
-    return this.db.list<string>('ice/tastes').valueChanges();
-  }
-
-  postTaste(tasteName: string) {
-    this.db.list<string>('ice/tastes').push(tasteName);
-  }
-
-  deleteTaste(tasteToBeDeleted: string) {
-    this.db
-      .list<string>('ice/tastes')
-      .snapshotChanges()
-      .pipe(
-        take(1),
-        map((snapshots) => {
-          return snapshots.map((item) => {
-            return { key: item.key?.valueOf(), payload: item.payload.val() };
-          });
-        })
-      )
-      .subscribe((tastes) => {
-        let temp = tastes.filter((element) => {
-          if ((element.payload as string) === tasteToBeDeleted) {
-            return true;
-          } else {
-            return false;
-          }
-        })[0];
-        this.db.list('ice/tastes').remove(temp.key);
-      });
-  }
-
-  getUnits(): Observable<string[]> {
-    return this.db.list<string>('ice/units').valueChanges();
-  }
-
-  postUnit(unitValue: string) {
-    this.db.list<string>('ice/units').push(unitValue);
-  }
-
-  deleteUnit(unitToBeDeleted: string) {
-    this.db
-      .list<string>('ice/units')
-      .snapshotChanges()
-      .pipe(
-        take(1),
-        map((snapshots) => {
-          return snapshots.map((item) => {
-            return { key: item.key?.valueOf(), payload: item.payload.val() };
-          });
-        })
-      )
-      .subscribe((tastes) => {
-        let temp = tastes.filter((element) => {
-          if ((element.payload as string) === unitToBeDeleted) {
-            return true;
-          } else {
-            return false;
-          }
-        })[0];
-        this.db.list('ice/units').remove(temp.key);
-      });
-  }
-
-  getOrders(date: string): Observable<Order[]> {
-    return this.db.list<Order>('orders/' + date).valueChanges();
-  }
-
-  postOrder(order: Order, date: string) {
-    this.db.list('orders/' + date + '/').push(order);
-  }
-
-  getFavourites(uid: string): Observable<IceCreamItem[]> {
-    return this.db
-      .list<IceCreamItem>('users/' + uid + '/favourites')
-      .valueChanges();
-  }
-
-  getFavourites2(uid: string) {
-    return this.db
-      .list<IceCreamItem>('users/' + uid + '/favourites')
-      .snapshotChanges();
-  }
-
-  postFavourite(uid: string, item: IceCreamItem): void {
-    this.db.list('users/' + uid + '/favourites/').push(item);
-  }
-
-  deleteFavourite(uid: string, itemToBeDeleted: IceCreamItem): void {
-    console.log('zaczynam delete');
-
-    this.db
-      .list('users/' + uid + '/favourites')
-      .snapshotChanges()
-      .pipe(
-        take(1),
-        map((snapshots) => {
-          return snapshots.map((item) => {
-            return { key: item.key?.valueOf(), payload: item.payload.val() };
-          });
-        })
-      )
-      .subscribe((favourites) => {
-        let temp = favourites.filter((element) => {
-          if (
-            (element.payload as IceCreamItem).taste === itemToBeDeleted.taste &&
-            (element.payload as IceCreamItem).quantity ===
-              itemToBeDeleted.quantity &&
-            (element.payload as IceCreamItem).unit === itemToBeDeleted.unit
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        })[0];
-        console.log(temp);
-        this.db.list('users/' + uid + '/favourites').remove(temp.key);
-      });
+  deleteFromList(path: string, key: string): void {
+    this.db.list(path).remove(key);
   }
 }

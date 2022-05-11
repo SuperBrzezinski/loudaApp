@@ -1,0 +1,5 @@
+<ng-container *ngIf="customerLastOrderItems$ | async as customerLastOrderItems">
+  <ul>
+    <li *ngFor="let item of customerLastOrderItems">smak {{item.taste}} - {{item.amount}}ml</li>
+  </ul>
+</ng-container>
