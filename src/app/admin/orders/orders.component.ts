@@ -1,5 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { add, format } from 'date-fns';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { AdminService } from '../admin.service';
 
 @Component({
   selector: 'app-orders',
@@ -8,12 +8,6 @@ import { add, format } from 'date-fns';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersComponent {
-  tomorrowDate = format(
-    add(new Date(), {
-      days: 1,
-    }),
-    'y-MM-dd'
-  );
-
-  constructor() {}
+  tomorrowDate = this.adminService.tomorrowDate;
+  constructor(private adminService: AdminService) {}
 }

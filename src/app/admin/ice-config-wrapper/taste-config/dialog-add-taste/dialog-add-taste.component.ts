@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { ApiService } from 'src/app/shared/services/api.service';
+import { AdminService } from 'src/app/admin/admin.service';
 
 @Component({
   selector: 'app-dialog-add-taste',
@@ -14,7 +14,7 @@ export class DialogAddTasteComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogAddTasteComponent>,
     private formBuild: FormBuilder,
-    private apiService: ApiService
+    private adminService: AdminService
   ) {}
 
   ngOnInit(): void {
@@ -24,9 +24,10 @@ export class DialogAddTasteComponent implements OnInit {
     this.dialogRef.close();
   }
   onSubmit() {
-    this.apiService
+    this.adminService
       .postTaste(this.form.get('name')!.value)
-      .subscribe((val) => console.log(val.body));
+      .subscribe((msg) => console.log(msg.body));
+
     this.cancelDialog();
   }
 

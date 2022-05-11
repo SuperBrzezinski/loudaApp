@@ -1,7 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { User } from 'src/app/shared/models/user.model';
-import { CustomersListService } from '../customers-list.service';
-import { Observable } from 'rxjs';
+import { AdminService } from '../../admin.service';
 
 @Component({
   selector: 'app-customer-table',
@@ -10,8 +8,8 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerTableComponent {
-  customers$: Observable<User[]> = this.customerListService.getCustomers();
+  customers$ = this.adminService.getAllCustomers();
   displayedColumns: string[] = ['index', 'name', 'email'];
 
-  constructor(private customerListService: CustomersListService) {}
+  constructor(private adminService: AdminService) {}
 }

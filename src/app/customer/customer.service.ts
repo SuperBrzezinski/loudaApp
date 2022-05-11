@@ -147,7 +147,7 @@ export class CustomerService {
             return false;
           }
         })[0];
-        this.apiService.deleteFormList(path, temp.key as string);
+        this.apiService.deleteFromList(path, temp.key as string);
       });
   }
 }

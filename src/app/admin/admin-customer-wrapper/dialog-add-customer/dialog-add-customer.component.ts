@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { CustomerSignUpService } from './customer-sign-up.service';
+import { AdminService } from '../../admin.service';
 
 @Component({
   selector: 'app-dialog-add-customer',
@@ -14,7 +14,7 @@ export class DialogAddCustomerComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogAddCustomerComponent>,
     private formBuild: FormBuilder,
-    private customerSignUpService: CustomerSignUpService
+    private adminService: AdminService
   ) {}
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class DialogAddCustomerComponent implements OnInit {
   }
 
   onSubmit() {
-    this.customerSignUpService.signUp(
+    this.adminService.newCustomerSignUp(
       this.form.get('name')!.value,
       this.form.get('email')!.value,
       this.form.get('password')!.value

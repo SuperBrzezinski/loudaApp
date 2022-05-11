@@ -24,114 +24,115 @@ export class ApiService {
       .valueChanges() as Observable<User>;
   }
 
-  getUsers(): Observable<User[]> {
-    return this.db.list<User>('users').valueChanges();
-  }
+  // getUsers(): Observable<User[]> {
+  //   return this.db.list<User>('users').valueChanges();
+  // }
 
-  postUser(uid: string, user: User) {
-    this.db.object('users/' + uid).set(user);
-  }
+  // postUser(uid: string, user: User) {
+  //   this.db.object('users/' + uid).set(user);
+  // }
 
   //powoli mozemy sie tego pozbywac - jeszcze nie
-  getTastes(): Observable<string[]> {
-    return this.db.list<string>('ice/tastes').valueChanges();
-  }
+  // getTastes(): Observable<string[]> {
+  //   return this.db.list<string>('ice/tastes').valueChanges();
+  // }
 
-  postTaste(tasteName: string): Observable<ResponseMessage> {
-    return this.getTastes().pipe(
-      switchMap((tastes) => {
-        if (tastes.findIndex((element) => element === tasteName) === -1) {
-          this.db.list<string>('ice/tastes').push(tasteName);
-          return of({
-            status: 'Success' as ResponseMessageStatus,
-            body: 'Smak dodany!',
-          });
-        } else {
-          return of({
-            status: 'Fail' as ResponseMessageStatus,
-            body: 'Podany smak już istnieje!',
-          });
-        }
-      }),
-      take(1)
-    );
-  }
+  // postTaste(tasteName: string): Observable<ResponseMessage> {
+  //   return this.getTastes().pipe(
+  //     switchMap((tastes) => {
+  //       if (tastes.findIndex((element) => element === tasteName) === -1) {
+  //         this.db.list<string>('ice/tastes').push(tasteName);
+  //         return of({
+  //           status: 'Success' as ResponseMessageStatus,
+  //           body: 'Smak dodany!',
+  //         });
+  //       } else {
+  //         return of({
+  //           status: 'Fail' as ResponseMessageStatus,
+  //           body: 'Podany smak już istnieje!',
+  //         });
+  //       }
+  //     }),
+  //     take(1)
+  //   );
+  // }
 
-  deleteTaste(tasteToBeDeleted: string) {
-    this.db
-      .list<string>('ice/tastes')
-      .snapshotChanges()
-      .pipe(
-        take(1),
-        map((snapshots) => {
-          return snapshots.map((item) => {
-            return { key: item.key?.valueOf(), payload: item.payload.val() };
-          });
-        })
-      )
-      .subscribe((tastes) => {
-        let temp = tastes.filter((element) => {
-          if ((element.payload as string) === tasteToBeDeleted) {
-            return true;
-          } else {
-            return false;
-          }
-        })[0];
-        this.db.list('ice/tastes').remove(temp.key);
-      });
-  }
+  // do wyjeb jak skoncze
+  // deleteTaste(tasteToBeDeleted: string) {
+  //   this.db
+  //     .list<string>('ice/tastes')
+  //     .snapshotChanges()
+  //     .pipe(
+  //       take(1),
+  //       map((snapshots) => {
+  //         return snapshots.map((item) => {
+  //           return { key: item.key?.valueOf(), payload: item.payload.val() };
+  //         });
+  //       })
+  //     )
+  //     .subscribe((tastes) => {
+  //       let temp = tastes.filter((element) => {
+  //         if ((element.payload as string) === tasteToBeDeleted) {
+  //           return true;
+  //         } else {
+  //           return false;
+  //         }
+  //       })[0];
+  //       this.db.list('ice/tastes').remove(temp.key);
+  //     });
+  // }
 
-  getUnits(): Observable<string[]> {
-    return this.db.list<string>('ice/units').valueChanges();
-  }
+  // getUnits(): Observable<string[]> {
+  //   return this.db.list<string>('ice/units').valueChanges();
+  // }
 
-  postUnit(unitValue: string): Observable<ResponseMessage> {
-    return this.getUnits().pipe(
-      switchMap((units) => {
-        if (units.findIndex((element) => element === unitValue) === -1) {
-          this.db.list<string>('ice/units').push(unitValue);
-          return of({
-            status: 'Success' as ResponseMessageStatus,
-            body: 'Jednostka dodana!',
-          });
-        } else {
-          return of({
-            status: 'Fail' as ResponseMessageStatus,
-            body: 'Podana jednostka już istnieje!',
-          });
-        }
-      }),
-      take(1)
-    );
-  }
+  // postUnit(unitValue: string): Observable<ResponseMessage> {
+  //   return this.getUnits().pipe(
+  //     switchMap((units) => {
+  //       if (units.findIndex((element) => element === unitValue) === -1) {
+  //         this.db.list<string>('ice/units').push(unitValue);
+  //         return of({
+  //           status: 'Success' as ResponseMessageStatus,
+  //           body: 'Jednostka dodana!',
+  //         });
+  //       } else {
+  //         return of({
+  //           status: 'Fail' as ResponseMessageStatus,
+  //           body: 'Podana jednostka już istnieje!',
+  //         });
+  //       }
+  //     }),
+  //     take(1)
+  //   );
+  // }
 
-  deleteUnit(unitToBeDeleted: string) {
-    this.db
-      .list<string>('ice/units')
-      .snapshotChanges()
-      .pipe(
-        take(1),
-        map((snapshots) => {
-          return snapshots.map((item) => {
-            return { key: item.key?.valueOf(), payload: item.payload.val() };
-          });
-        })
-      )
-      .subscribe((tastes) => {
-        let temp = tastes.filter((element) => {
-          if ((element.payload as string) === unitToBeDeleted) {
-            return true;
-          } else {
-            return false;
-          }
-        })[0];
-        this.db.list('ice/units').remove(temp.key);
-      });
-  }
+  // deleteUnit(unitToBeDeleted: string) {
+  //   this.db
+  //     .list<string>('ice/units')
+  //     .snapshotChanges()
+  //     .pipe(
+  //       take(1),
+  //       map((snapshots) => {
+  //         return snapshots.map((item) => {
+  //           return { key: item.key?.valueOf(), payload: item.payload.val() };
+  //         });
+  //       })
+  //     )
+  //     .subscribe((tastes) => {
+  //       let temp = tastes.filter((element) => {
+  //         if ((element.payload as string) === unitToBeDeleted) {
+  //           return true;
+  //         } else {
+  //           return false;
+  //         }
+  //       })[0];
+  //       this.db.list('ice/units').remove(temp.key);
+  //     });
+  // }
 
-  getOrders(date: string): Observable<Order[]> {
-    return this.db.list<Order>('orders/' + date).valueChanges();
-  }
+  // getOrders(date: string): Observable<Order[]> {
+  //   return this.db.list<Order>('orders/' + date).valueChanges();
+  // }
 
   getListAsObservable<T>(path: string): Observable<T[]> {
     return this.db.list<T>(path).valueChanges();
@@ -151,7 +152,7 @@ export class ApiService {
     this.db.object(path).set(objectToPost);
   }
 
-  deleteFormList(path: string, key: string): void {
+  deleteFromList(path: string, key: string): void {
     this.db.list(path).remove(key);
   }
 }

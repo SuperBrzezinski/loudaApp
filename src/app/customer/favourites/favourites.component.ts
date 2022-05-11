@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { Observable, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
-import { ApiService } from 'src/app/shared/services/api.service';
 import { CustomerService } from '../customer.service';
 
 @Component({
@@ -16,15 +15,9 @@ export class FavouritesComponent {
     this.customerService.getFavourites();
   displayedColumns: string[] = ['index', 'taste', 'unit', 'quantity', 'action'];
 
-  constructor(
-    private apiService: ApiService,
-    private customerService: CustomerService
-  ) {}
+  constructor(private customerService: CustomerService) {}
 
   removeFavourite(item: IceCreamItem) {
-    console.log(`przed przekazaniem: ${JSON.stringify(item)}`);
-
-    // this.apiService.deleteFavourite(this.customerUid, item);
     this.customerService.deleteFavourite(item);
   }
 }

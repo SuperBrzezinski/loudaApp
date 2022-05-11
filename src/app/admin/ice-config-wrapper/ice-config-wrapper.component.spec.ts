@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IceConfigComponent } from './ice-config.component';
+import { IceConfigWrapperComponent } from './ice-config-wrapper.component';
 
 describe('IceConfigComponent', () => {
-  let component: IceConfigComponent;
-  let fixture: ComponentFixture<IceConfigComponent>;
+  let component: IceConfigWrapperComponent;
+  let fixture: ComponentFixture<IceConfigWrapperComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IceConfigComponent ]
-    })
-    .compileComponents();
+      declarations: [IceConfigWrapperComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IceConfigComponent);
+    fixture = TestBed.createComponent(IceConfigWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

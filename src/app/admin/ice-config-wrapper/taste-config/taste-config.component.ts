@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddTasteComponent } from './dialog-add-taste/dialog-add-taste.component';
 
@@ -8,15 +8,12 @@ import { DialogAddTasteComponent } from './dialog-add-taste/dialog-add-taste.com
   styleUrls: ['./taste-config.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TasteConfigComponent implements OnInit {
+export class TasteConfigComponent {
   constructor(public dialog: MatDialog) {}
-
-  ngOnInit(): void {}
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(DialogAddTasteComponent, {
       width: '600px',
-      // data: { name: this.name, animal: this.animal },
     });
   }
 }

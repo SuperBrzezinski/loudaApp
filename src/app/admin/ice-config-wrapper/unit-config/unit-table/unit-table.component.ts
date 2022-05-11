@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from 'src/app/shared/services/api.service';
+import { AdminService } from 'src/app/admin/admin.service';
 
 @Component({
   selector: 'app-unit-table',
@@ -9,12 +9,12 @@ import { ApiService } from 'src/app/shared/services/api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UnitTableComponent {
-  units$: Observable<string[]> = this.apiService.getUnits();
+  units$: Observable<string[]> = this.adminService.getUnits();
   displayedColumns: string[] = ['index', 'name', 'actions'];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private adminService: AdminService) {}
 
   removeUnit(unit: string) {
-    this.apiService.deleteUnit(unit);
+    this.adminService.deleteUnit(unit);
   }
 }

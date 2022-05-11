@@ -3,8 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminGuard } from '../shared/guard/admin.guard';
 import { AuthGuard } from '../shared/guard/auth.guard';
 import { AdminShellComponent } from './admin-shell/admin-shell.component';
-import { CustomersListComponent } from './customers-list/customers-list.component';
-import { IceConfigComponent } from './ice-config/ice-config.component';
+import { AdminCustomerWrapperComponent } from './admin-customer-wrapper/admin-customer-wrapper';
+import { IceConfigWrapperComponent } from './ice-config-wrapper/ice-config-wrapper.component';
 import { OrdersComponent } from './orders/orders.component';
 const routes: Routes = [
   {
@@ -14,11 +14,11 @@ const routes: Routes = [
     children: [
       {
         path: 'customers',
-        component: CustomersListComponent,
+        component: AdminCustomerWrapperComponent,
       },
       {
         path: 'config',
-        component: IceConfigComponent,
+        component: IceConfigWrapperComponent,
       },
       {
         path: 'orders',

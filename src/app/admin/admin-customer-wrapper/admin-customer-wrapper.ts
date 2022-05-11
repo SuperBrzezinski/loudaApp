@@ -1,25 +1,18 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DialogAddCustomerComponent } from './dialog-add-customer/dialog-add-customer.component';
 
 @Component({
   selector: 'app-customers-list',
-  templateUrl: './customers-list.component.html',
-  styleUrls: ['./customers-list.component.scss'],
+  templateUrl: './admin-customer-wrapper.html',
+  styleUrls: ['./admin-customer-wrapper.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomersListComponent {
+export class AdminCustomerWrapperComponent {
   constructor(public dialog: MatDialog) {}
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddCustomerComponent, {
       width: '600px',
-      // data: { name: this.name, animal: this.animal },
     });
-
-    // dialogRef.afterClosed().subscribe((result) => {});
   }
 }
