@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { add, format } from 'date-fns';
-import { map, Observable, take } from 'rxjs';
+import { map, Observable, of, switchMap, take } from 'rxjs';
 import { IceCreamItemSummedUp } from 'src/app/shared/models/ice-cream-item-summed-up-model';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
 import { Order } from 'src/app/shared/models/order.model';
@@ -13,6 +13,10 @@ import {
   selectUserName,
   selectUserUid,
 } from 'src/app/state/user/user.selectors';
+import {
+  ResponseMessage,
+  ResponseMessageStatus,
+} from '../shared/models/response-message.model';
 
 @Injectable({
   providedIn: 'root',
@@ -70,8 +74,36 @@ export class CustomerService {
     );
   }
 
-  public addToFavourites(item: IceCreamItem): void {
-    this.apiService.pushToList(`users/${this.customerUid}/favourites`, item);
+  public addToFavourites(item: IceCreamItem): Observable<ResponseMessage> {
+    return this.getFavourites().pipe(
+      take(1),
+      switchMap((favourites) => {
+        if (
+          favourites.findIndex((element) => {
+            return (
+              element.taste === item.taste &&
+              element.unit === item.unit &&
+              element.quantity == item.quantity
+            );
+          }) === -1
+        ) {
+          this.apiService.pushToList(
+            `users/${this.customerUid}/favourites`,
+            item
+          );
+          return of({
+            status: 'Success' as ResponseMessageStatus,
+            body: 'Nowy ulubiony dodany!',
+          });
+        } else {
+          return of({
+            status: 'Fail' as ResponseMessageStatus,
+            body: 'Ulubiony już istnieje!',
+          });
+        }
+      }),
+      take(1)
+    );
   }
 
   public postOrder(order: Order): void {

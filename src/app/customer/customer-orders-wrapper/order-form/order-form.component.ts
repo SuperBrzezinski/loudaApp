@@ -55,7 +55,9 @@ export class OrderFormComponent implements OnInit {
   }
 
   addToFavourites(index: number): void {
-    this.customerService.addToFavourites(this.formItems.at(index).value);
+    this.customerService
+      .addToFavourites(this.formItems.at(index).value)
+      .subscribe((msg) => console.log(msg.body));
   }
 
   chooseFavourite(index: number, item: IceCreamItem) {
