@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { CustomerOrderService } from './customer-order.service';
+import { CustomerService } from '../customer.service';
 
 @Component({
   selector: 'app-customer-orders-wrapper',
@@ -8,11 +8,11 @@ import { CustomerOrderService } from './customer-order.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomerOrdersWrapperComponent implements OnInit {
-  tomorrowDate = this.customerOrderService.tomorrowDate;
+  tomorrowDate = this.customerService.tomorrowDate;
 
   public customerLastOrderDate!: string;
 
-  constructor(private customerOrderService: CustomerOrderService) {}
+  constructor(private customerService: CustomerService) {}
 
   ngOnInit(): void {
     this.init();
@@ -23,7 +23,7 @@ export class CustomerOrdersWrapperComponent implements OnInit {
   }
 
   private init() {
-    this.customerOrderService.getCustomerLastOrderDateAsObservable.subscribe(
+    this.customerService.getCustomerLastOrderDateAsObservable.subscribe(
       (date) => (this.customerLastOrderDate = date)
     );
   }

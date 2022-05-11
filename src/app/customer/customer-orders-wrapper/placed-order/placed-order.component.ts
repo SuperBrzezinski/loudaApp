@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CustomerOrderService } from '../customer-order.service';
+import { CustomerService } from '../../customer.service';
 
 @Component({
   selector: 'app-placed-order',
@@ -9,7 +9,7 @@ import { CustomerOrderService } from '../customer-order.service';
 })
 export class PlacedOrderComponent {
   customerLastOrderItems$ =
-    this.customerOrderService.getUserLastOrderItemsSummedUp();
+    this.customerService.getUserLastOrderItemsSummedUp();
 
-  constructor(private customerOrderService: CustomerOrderService) {}
+  constructor(private customerService: CustomerService) {}
 }

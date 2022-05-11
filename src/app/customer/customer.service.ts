@@ -17,7 +17,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class CustomerOrderService {
+export class CustomerService {
   public readonly tomorrowDate = format(
     add(new Date(), {
       days: 1,
@@ -31,9 +31,6 @@ export class CustomerOrderService {
   private customerLastOrderDateAsObservable = this.store.select(
     selectUserLastOrderDate
   );
-
-  //do wyjeb
-  // private userLastOrderItemsSummedUp!: IceCreamItemSummedUp[];
 
   constructor(private apiService: ApiService, private store: Store<AppState>) {
     this.store.select(selectUserUid).subscribe((uid) => {
@@ -50,11 +47,6 @@ export class CustomerOrderService {
       .subscribe((name) => {
         this.customerName = name as string;
       });
-
-    // //do wyjeb
-    // this.getUserLastOrderItemsSummedUpAsObservableOnce().subscribe(
-    //   (summedUpItems) => (this.userLastOrderItemsSummedUp = summedUpItems)
-    // );
   }
 
   get getCustomerUid() {
@@ -71,11 +63,6 @@ export class CustomerOrderService {
   get getCustomerLastOrderDateAsObservable() {
     return this.customerLastOrderDateAsObservable as Observable<string>;
   }
-
-  //do wyjeb
-  // get getUserLastOrderItemsSummedUp() {
-  //   return this.userLastOrderItemsSummedUp;
-  // }
 
   public getFavourites(): Observable<IceCreamItem[]> {
     return this.apiService.getListAsObservable(
@@ -125,5 +112,42 @@ export class CustomerOrderService {
         });
       })
     );
+  }
+
+  public getTastes(): Observable<string[]> {
+    return this.apiService.getListAsObservable(`ice/tastes`);
+  }
+
+  public getUnits(): Observable<string[]> {
+    return this.apiService.getListAsObservable('ice/units');
+  }
+
+  public deleteFavourite(itemToBeDeleted: IceCreamItem): void {
+    let path = `users/${this.customerUid}/favourites`;
+    this.apiService
+      .getListAsSnapshotActionObservable<IceCreamItem>(path)
+      .pipe(
+        take(1),
+        map((snapshots) => {
+          return snapshots.map((item) => {
+            return { key: item.key?.valueOf(), payload: item.payload.val() };
+          });
+        })
+      )
+      .subscribe((favourites) => {
+        let temp = favourites.filter((element) => {
+          if (
+            (element.payload as IceCreamItem).taste === itemToBeDeleted.taste &&
+            (element.payload as IceCreamItem).quantity ===
+              itemToBeDeleted.quantity &&
+            (element.payload as IceCreamItem).unit === itemToBeDeleted.unit
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        })[0];
+        this.apiService.deleteFormList(path, temp.key as string);
+      });
   }
 }

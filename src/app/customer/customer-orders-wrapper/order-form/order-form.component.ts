@@ -7,8 +7,7 @@ import {
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, take } from 'rxjs';
 import { IceCreamItem } from 'src/app/shared/models/icecreamitem.model';
-import { ApiService } from 'src/app/shared/services/api.service';
-import { CustomerOrderService } from '../customer-order.service';
+import { CustomerService } from '../../customer.service';
 
 @Component({
   selector: 'app-order-form',
@@ -19,16 +18,15 @@ import { CustomerOrderService } from '../customer-order.service';
 export class OrderFormComponent implements OnInit {
   form!: FormGroup;
 
-  possibleTastes$: Observable<string[]> = this.apiService.getTastes();
-  possibleUnits$: Observable<string[]> = this.apiService.getUnits();
-  possibleFavourites$ = this.customerOrderService.getFavourites();
-  customerLastOrderDate = this.customerOrderService.getCustomerLastOrderDate;
+  possibleTastes$: Observable<string[]> = this.customerService.getTastes();
+  possibleUnits$: Observable<string[]> = this.customerService.getUnits();
+  possibleFavourites$ = this.customerService.getFavourites();
+  customerLastOrderDate = this.customerService.getCustomerLastOrderDate;
 
   constructor(
-    private apiService: ApiService,
     private formBuild: FormBuilder,
     private changeDetectionRef: ChangeDetectorRef,
-    private customerOrderService: CustomerOrderService
+    private customerService: CustomerService
   ) {}
 
   ngOnInit(): void {
@@ -57,7 +55,7 @@ export class OrderFormComponent implements OnInit {
   }
 
   addToFavourites(index: number): void {
-    this.customerOrderService.addToFavourites(this.formItems.at(index).value);
+    this.customerService.addToFavourites(this.formItems.at(index).value);
   }
 
   chooseFavourite(index: number, item: IceCreamItem) {
@@ -68,14 +66,14 @@ export class OrderFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.customerOrderService.postOrder({
-      customerName: this.customerOrderService.getCustomerName,
+    this.customerService.postOrder({
+      customerName: this.customerService.getCustomerName,
       items: this.formItems.value,
     });
   }
 
   loadLastOrder(): void {
-    this.customerOrderService
+    this.customerService
       .getUserLastOrderItems()
       .pipe(take(1))
       .subscribe((items) => {

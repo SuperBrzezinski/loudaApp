@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/compat/database';
+import {
+  AngularFireDatabase,
+  SnapshotAction,
+} from '@angular/fire/compat/database';
 import { map, Observable, of, switchMap, take, tap } from 'rxjs';
 import { IceCreamItem } from '../models/icecreamitem.model';
 import { Order } from '../models/order.model';
@@ -29,13 +32,7 @@ export class ApiService {
     this.db.object('users/' + uid).set(user);
   }
 
-  //to pewnie da sie wywalic
-  // getUserLastOrderItems(uid: string): Observable<IceCreamItem[]> {
-  //   return this.db
-  //     .list<IceCreamItem>(`users/${uid}/lastOrder/items`)
-  //     .valueChanges();
-  // }
-
+  //powoli mozemy sie tego pozbywac - jeszcze nie
   getTastes(): Observable<string[]> {
     return this.db.list<string>('ice/tastes').valueChanges();
   }
@@ -136,51 +133,14 @@ export class ApiService {
     return this.db.list<Order>('orders/' + date).valueChanges();
   }
 
-  // to powinno dac sie wywalic
-  // postOrder(order: Order, date: string) {
-  //   this.db.list('orders/' + date + '/').push(order);
-  // }
-
-  getFavourites(uid: string): Observable<IceCreamItem[]> {
-    return this.db
-      .list<IceCreamItem>('users/' + uid + '/favourites')
-      .valueChanges();
-  }
-
-  deleteFavourite(uid: string, itemToBeDeleted: IceCreamItem): void {
-    console.log('zaczynam delete');
-
-    this.db
-      .list('users/' + uid + '/favourites')
-      .snapshotChanges()
-      .pipe(
-        take(1),
-        map((snapshots) => {
-          return snapshots.map((item) => {
-            return { key: item.key?.valueOf(), payload: item.payload.val() };
-          });
-        })
-      )
-      .subscribe((favourites) => {
-        let temp = favourites.filter((element) => {
-          if (
-            (element.payload as IceCreamItem).taste === itemToBeDeleted.taste &&
-            (element.payload as IceCreamItem).quantity ===
-              itemToBeDeleted.quantity &&
-            (element.payload as IceCreamItem).unit === itemToBeDeleted.unit
-          ) {
-            return true;
-          } else {
-            return false;
-          }
-        })[0];
-        console.log(temp);
-        this.db.list('users/' + uid + '/favourites').remove(temp.key);
-      });
-  }
-
   getListAsObservable<T>(path: string): Observable<T[]> {
     return this.db.list<T>(path).valueChanges();
+  }
+
+  getListAsSnapshotActionObservable<T>(
+    path: string
+  ): Observable<SnapshotAction<T>[]> {
+    return this.db.list<T>(path).snapshotChanges();
   }
 
   pushToList<T>(path: string, itemToPush: T): void {
@@ -189,5 +149,9 @@ export class ApiService {
 
   postObject<T>(path: string, objectToPost: T): void {
     this.db.object(path).set(objectToPost);
+  }
+
+  deleteFormList(path: string, key: string): void {
+    this.db.list(path).remove(key);
   }
 }
