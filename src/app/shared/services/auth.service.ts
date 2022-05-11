@@ -9,6 +9,7 @@ import { Role } from '../models/role.model';
 import { ApiService } from './api.service';
 import { take } from 'rxjs';
 import { User } from '../models/user.model';
+import { AppState } from 'src/app/state/app.state';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,7 @@ export class AuthService {
     public router: Router,
     public ngZone: NgZone,
     private apiService: ApiService,
-    private store: Store<{ role: Role }>
+    private store: Store<AppState>
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
@@ -60,6 +61,7 @@ export class AuthService {
           .getObjectAsObservavble<User>(`users/${result.user?.uid}`)
           .pipe(take(1))
           .subscribe((user) => {
+            localStorage.setItem('role', JSON.stringify(user!.role));
             this.store.dispatch(
               logIn({
                 uid: result.user!.uid,
@@ -81,16 +83,16 @@ export class AuthService {
       });
   }
   // Returns true when user is looged in and email is verified
-  // get isLoggedIn(): boolean {
-  //   const user = JSON.parse(localStorage.getItem('user')!);
-  //   // commented out to be able to login as unverified user
-  //   // return user !== null && user.emailVerified !== false ? true : false;
-  //   // return user !== null && user.emailVerified !== false ? true : true;
-  //   return user !== null;
-  // }
-  // get isAdmin(): boolean {
-  //   return JSON.parse(localStorage.getItem('role')!) === 'admin';
-  // }
+  get isLoggedIn(): boolean {
+    const user = JSON.parse(localStorage.getItem('user')!);
+    // commented out to be able to login as unverified user
+    // return user !== null && user.emailVerified !== false ? true : false;
+    // return user !== null && user.emailVerified !== false ? true : true;
+    return user !== null;
+  }
+  get isAdmin(): boolean {
+    return JSON.parse(localStorage.getItem('role')!) === 'admin';
+  }
 
   SignOut() {
     return this.afAuth.signOut().then(() => {
