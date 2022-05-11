@@ -18,6 +18,7 @@ import { DialogAddUnitComponent } from './ice-config-wrapper/unit-config/dialog-
 import { OrdersComponent } from './orders/orders.component';
 import { OrdersTableComponent } from './orders/orders-table/orders-table.component';
 import { SumupTableComponent } from './orders/sumup-table/sumup-table.component';
+import { IceAmountPipe } from '../shared/pipes/ice-amount.pipe';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SumupTableComponent } from './orders/sumup-table/sumup-table.component'
     OrdersComponent,
     OrdersTableComponent,
     SumupTableComponent,
+    IceAmountPipe,
   ],
   imports: [
     CommonModule,
