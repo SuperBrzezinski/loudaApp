@@ -41,7 +41,7 @@ export class OrderFormComponent implements OnInit {
     return this.formBuild.group({
       taste: ['', [Validators.required, Validators.minLength(3)]],
       unit: ['', [Validators.required]],
-      quantity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
+      quantity: ['', [Validators.required, Validators.pattern('^[1-9]*$')]],
     });
   }
 
@@ -106,7 +106,7 @@ export class OrderFormComponent implements OnInit {
           unit: ['', Validators.required],
           quantity: [
             '1',
-            [Validators.required, Validators.pattern('^[0-9]*$')],
+            [Validators.required, Validators.pattern('^[1-9]*$')],
           ],
         }),
       ]),

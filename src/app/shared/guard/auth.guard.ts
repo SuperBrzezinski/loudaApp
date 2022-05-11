@@ -24,19 +24,20 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return this.store.select(selectUserisLoggedIn).pipe(
-      map((isLoggedIn) => {
-        // console.log(role);
+    // return this.store.select(selectUserisLoggedIn).pipe(
+    //   map((isLoggedIn) => {
+    //     // console.log(role);
 
-        if (!isLoggedIn) {
-          this.router.navigate(['sign-in']);
-        }
-        return true;
-      })
-    );
-    // if (this.authService.isLoggedIn !== true) {
-    //   this.router.navigate(['sign-in']);
-    // }
-    // return true;
+    //     if (!isLoggedIn) {
+    //       this.router.navigate(['sign-in']);
+    //       return false;
+    //     }
+    //     return true;
+    //   })
+    // );
+    if (this.authService.isLoggedIn !== true) {
+      this.router.navigate(['sign-in']);
+    }
+    return true;
   }
 }

@@ -29,7 +29,7 @@
             <mat-label>Jednostka</mat-label>
             <mat-select formControlName="unit" name="unit">
               <mat-option ngDefaultControl *ngFor="let unit of possibleUnits" [value]="unit">
-                {{unit}}ml
+                {{unit | iceAmount}}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="formItems.controls[i].get('unit')?.invalid">Wybierz jednostkę</mat-error>
@@ -39,7 +39,7 @@
         <mat-form-field class="example-margin example-width" appearance="fill" style="margin-right: 1rem; width: 8rem;">
           <mat-label>Liczba</mat-label>
           <input matInput formControlName="quantity" type="number" >
-          <mat-error *ngIf="formItems.controls[i].get('quantity')?.invalid">Tylko liczby całkowite</mat-error>
+          <mat-error *ngIf="formItems.controls[i].get('quantity')?.invalid">Tylko liczby całkowite dodatnie</mat-error>
         </mat-form-field>
 
         <button *ngIf="!first" mat-flat-button type="button" color="primary" (click)="removeFormItem(i)" style="margin-right: 1rem;">-</button>
@@ -54,7 +54,7 @@
               <mat-label><mat-icon>favorite</mat-icon></mat-label>
               <mat-select >
                 <mat-option ngDefaultControl *ngFor="let favourite of possibleFavourites" (click)="chooseFavourite(i, favourite)">
-                  Smak {{favourite.taste}} - {{favourite.unit}}ml * {{favourite.quantity}}
+                  Smak {{favourite.taste}} - {{favourite.unit | iceAmount}} * {{favourite.quantity}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
